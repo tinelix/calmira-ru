@@ -45,6 +45,10 @@ type
     MemLabel: TLabel;
     ResLabel: TLabel;
     AppTitle: TImage;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label5: TLabel;
+    Bevel3: TBevel;
     procedure LicenseBtnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure HomepageLabelClick(Sender: TObject);
@@ -100,7 +104,7 @@ procedure TAboutBox.HomepageLabelClick(Sender: TObject);
 begin
   OKButton.Click;
   { 2.2 added http:// }
-  OpenURL('http://www.calmira.org');
+  OpenURL('http://www.calmira.net');
 end;
 
 procedure TAboutBox.AppLogoClick(Sender: TObject);

@@ -48,7 +48,7 @@ uses
   CompSys in 'COMPSYS.PAS' {Computer Window},
   Shorts in 'SHORTS.PAS' {Shortcuts},
   Filter in 'FILTER.PAS' {Filter},
-  WasteBin in 'WASTEBIN.PAS' {Bin Window},
+  Wastebin in 'WASTEBIN.PAS' {Bin Window},
   FileFind in 'FILEFIND.PAS' {Find Form},
   Iconic in 'ICONIC.PAS' {Iconic Classes},
   FileMan in 'FILEMAN.PAS' {File Management},

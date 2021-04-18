@@ -26,26 +26,26 @@ unit Embed;
 interface
 
 const
-  SSSelectedItems   = 'Selected %d items  %s';
-  SSSelectedOneItem = 'Selected %d item  %s';
-  SSNumObjects      = '%d object%s  %s';
-  SSNumTasks        = '%d task%s'; { 3.11 }
-  SSNoDescription   = '(No description)';
-  SSNoNetConnection = '(None)';
-  SSItemsFound      = '%d items found';
-  SSFoundSelected   = '%d selected';
-  SSDrive           = 'Drive (%s:)¬%s';
-  SSParallelPort    = 'Parallel port LPT%s¬%s';
+  SSSelectedItems   = 'Выбрано %d элементов  %s';
+  SSSelectedOneItem = 'Выбран %d элемент  %s';
+  SSNumObjects      = '%d элемент%s  %s';
+  SSNumTasks        = '%d задач%s'; { 3.11 }
+  SSNoDescription   = '(Нет описания)';
+  SSNoNetConnection = '(Нет данных)';
+  SSItemsFound      = '%d элементов найдено';
+  SSFoundSelected   = '%d выбрано';
+  SSDrive           = 'Диск (%s:)¬%s';
+  SSParallelPort    = 'LPT%s¬%s';
 
 const
   SelectionLabels: array[Boolean] of string[23] =
     (SSSelectedItems, SSSelectedOneItem); { 2.2 }
 
-  SSUnknownDrive = 'Unknown (%s:)';
-  SSNoDrive      = 'No drive (%s:)';
-  SSFloppyDrive  = 'Floppy (%s:)';
-  SSFixedDrive   = 'Fixed (%s:)';
-  SSNetworkDrive = 'Network (%s:)';
+  SSUnknownDrive = 'Неизв. (%s:)';
+  SSNoDrive      = 'Нет диска (%s:)';
+  SSFloppyDrive  = 'Гибкий (%s:)';
+  SSFixedDrive   = 'Жесткий (%s:)';
+  SSNetworkDrive = 'Сетевой (%s:)';
   SSCDROMDrive   = 'CD-ROM (%s:)';
   SSRamDrive     = 'RAMdisk (%s:)';
 

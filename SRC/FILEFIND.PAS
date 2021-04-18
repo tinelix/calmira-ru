@@ -566,7 +566,10 @@ procedure TFindForm.FormShow(Sender: TObject);
 begin
   if StartEdit.Text = '' then
     StartEdit.Text := LowerCase(Copy(GetCurrentDir, 1, 3));
-  FileEdit.SetFocus;
+  try
+     FileEdit.SetFocus;
+  except
+     end;
   Taskbar.AddButton(Handle);
 end;
 
