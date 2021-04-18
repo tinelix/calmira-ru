@@ -1518,7 +1518,7 @@ begin
     FullDT := ReadString('Taskbar', 'FullDateTime', 'dddd, mmmm d, yyyy');
     with StartButton do
     begin
-      Caption := ReadString('Start button', 'Caption', 'Start');
+      Caption := ReadString('Start button', 'Caption', 'Пуск');
       Left := ReadInteger('Start button', 'Left', Left);
       Width := ReadInteger('Start button', 'Width', Width);
       s := FileWritePath + 'STARTBTN.BMP';

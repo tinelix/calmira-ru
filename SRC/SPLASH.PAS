@@ -44,6 +44,7 @@ type
     Copy1Label: TLabel;
     Copy2Label: TLabel;
     AppTitle: TImage;
+    Label1: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormKeyDown(Sender: TObject; var Key: Word;

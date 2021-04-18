@@ -451,7 +451,10 @@ begin
   begin
     SetUpdateState(False);
     Canvas.Pen.Color := clGray;
-    Items[1].Expand; { 3.11 }
+    try
+       Items[1].Expand; { 3.11 }
+    except
+       end;
   end;
   Configure;
   if StartMenu3D then Win95Menu.Checked := True

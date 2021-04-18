@@ -124,7 +124,7 @@ end;
 
 procedure TTipDialog.HomePageClick(Sender: TObject);
 begin
-  DefaultExec('http://www.calmira.org', '', '', SW_SHOWNORMAL);
+  DefaultExec('http://www.calmira.net', '', '', SW_SHOWNORMAL);
 end;
 
 procedure TTipDialog.cbShowDailyTipsClick(Sender: TObject);
