@@ -269,10 +269,18 @@ begin
   Caption := Notes.ActivePage;
   with NoteBook.Pages do
   begin
-    if VerInfoList.Items.Count = 0 then Delete(IndexOf(LoadStr(SVersion)));
+    try
+       if VerInfoList.Items.Count = 0 then Delete(IndexOf(LoadStr(SVersion)));
+    except
+       if VerInfoList.Items.Count = 0 then Delete(IndexOf('Version'));
+    end;
     if not (Item is TFileItem) or
       (FileExt = '') or ExtensionIn(FileExt, Programs) then
-        Delete(IndexOf(LoadStr(SAssociation)));
+        try
+            Delete(IndexOf(LoadStr(SAssociation)));
+        except
+            Delete(IndexOf('Association'));
+        end;
   end;
   TabPanel.Tabs.Assign(Notebook.Pages); { 2.12 }
 end;
@@ -362,8 +370,13 @@ begin
   ShowHourglass;
   with DirInfo((Item as TFolder).Fullname, True) do
   begin
-    TotalLab.Caption := FmtLoadStr(STotalContents, [files, OneItem[files = 1],
-      dirs, OneItem[dirs = 1], FormatByte(size, 2, 2)]);
+    try
+       TotalLab.Caption := FmtLoadStr(STotalContents, [files, OneItem[files = 1],
+       dirs, OneFolder[dirs = 1], FormatByte(size, 2, 2)]);
+    except
+       TotalLab.Caption := IntToStr(files) + ' файл' + OneItem[files = 1] + ', ' +
+       IntToStr(dirs) + ' пап' + OneFolder[dirs = 1] + ', итого ' + FormatByte(size, 2, 2);
+    end;
     TotalLab.Hint := FormatByteLong(Size);
   end;
   with TotalLab do

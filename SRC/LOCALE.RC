@@ -22,7 +22,7 @@ STRINGTABLE
   SInternetRefPrompt, "&URL:";
 
   SMenuCascadeBrowsers, "Cascade browsers";
-  SMenuArrangeIcons, "Arrange task icons";
+  SMenuArrangeIcons, "Упорядочить значки";
   SMenuLineUpIcons, "Выстроить значки";
   SMenuCloseBrowsers, "Стереть браузеры";
   SMenuClearDesktop, "Очистить рабочий стол";
@@ -147,9 +147,9 @@ STRINGTABLE
   SAppletFormat, "<Всплыв. подсказка>=<командная строка>";
 
   SUnknown, "Неизвестно";
-  SFolderContents, "%s в %d файл%s";
-  SSelectionContents, "%d файл%s в %d пап%s";
-  STotalContents, "%d файл%s, %d пап%s, %s итого";
+  SFolderContents, "%s в %d файлов";
+  SSelectionContents, "%d файлов в %d папках";
+  STotalContents, "%d файлов, %d папок, %s итого";
   SVersion, "Версия";
   SAssociation, "Ассоциация";
   SAssociateTypeWith, "Ассоциировать тип файла .%s с:";
