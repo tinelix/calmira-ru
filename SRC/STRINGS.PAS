@@ -13,12 +13,13 @@ interface
 uses Classes;
 
 const
-  Uppers = ['A'..'Z'];
-  Lowers = ['a'..'z'];
+  Uppers = ['A'..'Я'];
+  Lowers = ['a'..'я'];
   Alphas = Uppers + Lowers;
   Digits = ['0'..'9'];
   AlphaDigits = Alphas + Digits;
-  OneItem : array[Boolean] of string[2] = ('s', '');
+  OneItem : array[Boolean] of string[2] = ('ов', '');
+  OneFolder : array[Boolean] of string[2] = ('ок', 'ка');
 
 type
   TAttrStr = string[5];

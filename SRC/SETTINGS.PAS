@@ -351,7 +351,7 @@ procedure LoadBinProp;
 begin
   with ini do
   begin
-    BinCaption  := ReadString('Bin', 'Caption', 'Bin');
+    BinCaption  := ReadString('Bin', 'Caption', 'Корзина');
     BinAction   := TBinAction(ReadInteger('Bin', 'Action', 0));
     BinCapacity := ReadInteger('Bin', 'Capacity', 8);
     BinIcons    := ReadBool('Bin', 'Icons', False);
@@ -610,7 +610,7 @@ procedure LoadSystemProp;
 begin
   with ini do
   begin
-    ComputerCaption := ReadString('Computer', 'Caption', 'Computer');
+    ComputerCaption := ReadString('Computer', 'Caption', 'Компьютер');
     ShowSplash := ReadBool('Preferences', 'ShowSplash', True);
     RestoreSys := ReadBool('Preferences', 'RestoreSys', False);
     SysWinQuit := ReadBool('Preferences', 'SysWinQuit', False);
@@ -670,9 +670,9 @@ begin
   with ini do
   begin
     DisableTaskbar := ReadBool('Taskbar', 'Disable', False);
-    StayVisible := ReadBool('Taskbar', 'StayVisible', False);
+    StayVisible := ReadBool('Taskbar', 'StayVisible', True);
     ShrinkMax   := ReadBool('Taskbar', 'ShrinkMax', True);
-    Clock24     := ReadBool('Taskbar', 'Clock24', False);
+    Clock24     := ReadBool('Taskbar', 'Clock24', True);
     PopupRes    := ReadBool('Taskbar', 'PopupRes', True);
     PopupDate   := ReadBool('Taskbar', 'PopupDate', True);
     Animate     := ReadBool('Taskbar', 'Animate', True);
@@ -763,6 +763,8 @@ begin
   WindowPos := TStringList.Create;
   GlobalCaptions := TStringList.Create;
   GlobalFont := TFont.Create;
+  GlobalFont.Name := 'MS Sans Serif';
+  GlobalFont.Size := 8;
   with TIniFile.Create('system.ini') do begin
     IsShell := CompareText(ExtractFilename(ReadString('boot', 'shell',
       'progman.exe')), ExtractFilename(Application.Exename)) = 0;

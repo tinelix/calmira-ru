@@ -129,14 +129,14 @@ begin
   if not FHasData then Exit;
   OS := FixedInfo^.dwFileOS;
   { case cannot be used with LongInt type }
-  if OS = VOS_UNKNOWN then Result := 'Unknown'
+  if OS = VOS_UNKNOWN then Result := 'Неизвестно'
   else if OS = VOS_DOS then Result := 'MS-DOS'
   else if OS = VOS_NT then Result := 'Windows NT'
-  else if OS = VOS__WINDOWS16 then Result := '16-bit Windows'
-  else if OS = VOS__WINDOWS32 then Result := '32-bit Windows'
-  else if OS = VOS_DOS_WINDOWS16 then Result := '16-bit Windows with MS-DOS'
-  else if OS = VOS_DOS_WINDOWS32 then Result := '32-bit Windows with MS-DOS'
-  else if OS = VOS_NT_WINDOWS32 then Result := '32-bit Windows NT';
+  else if OS = VOS__WINDOWS16 then Result := '16-битная Windows'
+  else if OS = VOS__WINDOWS32 then Result := '32-битная Windows'
+  else if OS = VOS_DOS_WINDOWS16 then Result := '16-битная Windows с MS-DOS'
+  else if OS = VOS_DOS_WINDOWS32 then Result := '32-битная Windows с MS-DOS'
+  else if OS = VOS_NT_WINDOWS32 then Result := '32-битная Windows NT';
 end;
 
 function TVersion.GetFileType: string;
@@ -144,13 +144,13 @@ begin
   Result := '';
   if FHasData then
     case FixedInfo^.dwFileType of
-      VFT_UNKNOWN    : Result := 'Unknown';
-      VFT_APP        : Result := 'Application';
-      VFT_DLL        : Result := 'Dynamic link library';
-      VFT_DRV        : Result := 'Device driver';
-      VFT_FONT       : Result := 'Font';
-      VFT_VXD        : Result := 'Virtual device driver';
-      VFT_STATIC_LIB : Result := 'Static link library';
+      VFT_UNKNOWN    : Result := 'Неизвестно';
+      VFT_APP        : Result := 'Приложение';
+      VFT_DLL        : Result := 'Динамически подключаемая библиотека';
+      VFT_DRV        : Result := 'Драйвер';
+      VFT_FONT       : Result := 'Шрифт';
+      VFT_VXD        : Result := 'Драйвер виртуального устройства';
+      VFT_STATIC_LIB : Result := 'Библиотека';
     end;
 end;
 
@@ -160,22 +160,22 @@ begin
   if not FHasData then Exit;
   if FixedInfo^.dwFileType = VFT_DRV then
     case FixedInfo^.dwFileSubType of
-      VFT2_UNKNOWN         : Result := 'Unknown';
-      VFT2_DRV_COMM        : Result := 'Communications';
-      VFT2_DRV_PRINTER     : Result := 'Printer';
-      VFT2_DRV_KEYBOARD    : Result := 'Keyboard';
-      VFT2_DRV_LANGUAGE    : Result := 'Language';
-      VFT2_DRV_DISPLAY     : Result := 'Display';
-      VFT2_DRV_MOUSE       : Result := 'Mouse';
-      VFT2_DRV_NETWORK     : Result := 'Network';
-      VFT2_DRV_SYSTEM      : Result := 'System';
+      VFT2_UNKNOWN         : Result := 'Неизвестно';
+      VFT2_DRV_COMM        : Result := 'Средства связи';
+      VFT2_DRV_PRINTER     : Result := 'Принтер';
+      VFT2_DRV_KEYBOARD    : Result := 'Клавиатура';
+      VFT2_DRV_LANGUAGE    : Result := 'Язык';
+      VFT2_DRV_DISPLAY     : Result := 'Экран';
+      VFT2_DRV_MOUSE       : Result := 'Мышь';
+      VFT2_DRV_NETWORK     : Result := 'Сеть';
+      VFT2_DRV_SYSTEM      : Result := 'Система';
       VFT2_DRV_INSTALLABLE : Result := 'Installable';
-      VFT2_DRV_SOUND       : Result := 'Sound';
+      VFT2_DRV_SOUND       : Result := 'Звук';
     end
   else if FixedInfo^.dwFileType = VFT_FONT then
     case FixedInfo^.dwFileSubType of
-      VFT2_FONT_RASTER   : Result := 'Raster';
-      VFT2_FONT_VECTOR   : Result := 'Vector';
+      VFT2_FONT_RASTER   : Result := 'Растровый';
+      VFT2_FONT_VECTOR   : Result := 'Векторный';
       VFT2_FONT_TRUETYPE : Result := 'TrueType';
     end;
 end;

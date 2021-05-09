@@ -1640,7 +1640,7 @@ begin
     HintStr := '';
     if PopupDate then AppendStr(Hintstr, FormatDateTime(FullDT, Now));
     if PopupRes then AppendStr(Hintstr, #13#10 +
-      Format('System %d%%  GDI %d%%  User %d%%',
+      Format('Система %d%%  GDI %d%%  Польз. %d%%',
       [GetFreeSystemResources(GFSR_SYSTEMRESOURCES),
        GetFreeSystemResources(GFSR_GDIRESOURCES),
        GetFreeSystemResources(GFSR_USERRESOURCES)]));
