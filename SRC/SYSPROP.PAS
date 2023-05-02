@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.32                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -27,7 +30,8 @@ interface
 
 uses WinTypes, WinProcs, Classes, Graphics, Forms, Controls, Buttons,
   StdCtrls, ExtCtrls, Chklist, TabNotBk, Grids, StylSped, Outline, Spin,
-  Scrtree, Dialogs, Settings, CalForm, ExtForm, TabPanel, Picbtn, Profile;
+  Scrtree, Dialogs, Settings, CalForm, ExtForm, TabPanel, Picbtn, Profile,
+  Xpbutton,ChangBmp;
 
 type
   TSysPropDlg = class(TForm)
@@ -42,21 +46,11 @@ type
     Label1: TLabel;
     PrefList: TCheckList;
     Outline: TScrollTree;
-    AddBtn: TStyleSpeed;
-    RemoveBtn: TStyleSpeed;
-    SaveBtn: TStyleSpeed;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
-    HelpBtn: TPicBtn;
     Bevel5: TBevel;
     rbShareSettings: TRadioButton;
     rbMultiProfiles: TRadioButton;
     UserList: TListBox;
-    AddUserBtn: TStyleSpeed;
-    ChangePasswordBtn: TStyleSpeed;
-    RemoveUserBtn: TStyleSpeed;
     Label10: TLabel;
-    ModifyBtn: TStyleSpeed;
     cbNoAnonUser: TCheckBox;
     cbApplyChanges: TCheckBox;
     Bevel6: TBevel;
@@ -80,6 +74,28 @@ type
     PlayBtn: TStyleSpeed;
     StopBtn: TStyleSpeed;
     OpenSoundDialog: TOpenDialog;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    HelpBtn: TXPButton;
+    AddUserBtn: TXPButton;
+    ChangePassWordBtn: TXPButton;
+    RemoveUserBtn: TXPButton;
+    AddBtn: TXPButton;
+    RemoveBtn: TXPButton;
+    ModifyBtn: TXPButton;
+    SaveBtn: TXPButton;
+    ClassicHelpBtn: TButton;
+    ClassicCancelBtn: TButton;
+    ClassicOkBtn: TButton;
+    ClassicAddUserBtn: TButton;
+    ClassicChangePasswordBtn: TButton;
+    ClassicRemoveUserBtn: TButton;
+    ClassicAddBtn: TButton;
+    ClassicRemoveBtn: TButton;
+    ClassicModifyBtn: TButton;
+    ClassicSaveBtn: TButton;
+    ClassicChangeBmp: TButton;
+    ChangeBmp: TXPButton;
     procedure FormCreate(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure OutlineDrawItem(Control: TWinControl; Index: Integer;
@@ -109,6 +125,9 @@ type
     procedure SoundBtnClick(Sender: TObject);
     procedure PlayBtnClick(Sender: TObject);
     procedure StopBtnClick(Sender: TObject);
+    procedure CancelBtnClick(Sender: TObject);
+    procedure HelpBtnClick(Sender: TObject);
+    procedure ClassicChangeBmpClick(Sender: TObject);
   private
     { Private declarations }
     FilledOutline: Boolean;
@@ -136,6 +155,47 @@ var
   code, i: Integer;
   rec: TSearchRec;
 begin
+  Color := kleur1;
+  TabPanel.Color := kleur2;
+  Height := 402;
+  Outline.Height := 235;
+  If not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    HelpBtn.Visible := false;
+    AddUserBtn.Visible := false;
+    ChangePassWordBtn.Visible := false;
+    RemoveUserBtn.Visible := false;
+    AddBtn.Visible := false;
+    RemoveBtn.Visible := false;
+    ModifyBtn.Visible := false;
+    SaveBtn.Visible := false;
+    ChangeBmp.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicHelpBtn.Visible := true;
+    ClassicAddUserBtn.Visible := true;
+    ClassicChangePasswordBtn.Visible := true;
+    ClassicRemoveUserBtn.Visible := true;
+    ClassicAddBtn.Visible := true;
+    ClassicRemoveBtn.Visible := true;
+    ClassicModifyBtn.Visible := true;
+    ClassicSaveBtn.Visible := True;
+    ClassicChangeBmp.Visible := True;
+    ClassicOkBtn.Top := 344;
+    ClassicCancelBtn.Top := 344;
+    ClassicHelpBtn.Top := 344;
+    ClassicAddUserBtn.Top := 92;
+    ClassicChangePasswordBtn.Top := 120;
+    ClassicRemoveUserBtn.Top := 148;
+    ClassicAddBtn.Top := 254;
+    ClassicRemoveBtn.Top := 254;
+    ClassicModifyBtn.Top := 254;
+    ClassicSaveBtn.Top := 254;
+    ClassicChangeBmp.Top := 200;
+
+   end;
   PrefList.Color := Colors[ccChecklist];
   Notebook.PageIndex := 0;
   CapEdit.Text := ComputerCaption;
@@ -198,6 +258,7 @@ begin
 end;
 
 procedure TSysPropDlg.OKBtnClick(Sender: TObject);
+var i: longint;
 begin
   ComputerCaption := CapEdit.Text;
   PrefList.GetData(
@@ -215,8 +276,21 @@ begin
   { 3.01 }
   UserIni.WriteBool('Settings', 'NoAnonUser', cbNoAnonUser.Checked);
   if AdvancedChanged and (MsgDialogRes(SQuerySaveAdvanced,
-    mtConfirmation, [mbYes, mbNo], 0) = mrYes) then SaveBtn.Click;
+    mtConfirmation, [mbYes, mbNo], 0) = mrYes) then
+     begin
+      ShowHourglass;
+  with ini do
+    for i := 1 to Outline.ItemCount do
+      with Outline.Items[i] do
+        if Level = 1 then EraseSection(Text)
+        else WriteString(Parent.Text, GetStrKey(Text), GetStrValue(Text));
+  AdvancedChanged := False;
+  { 3.1 }
+  if cbApplyChanges.Checked then
+    PostMessage(Application.Handle, WM_CALMIRA, CM_RELOADOPTIONS, 0);
+end;
   AnnounceSettingsChanged([scSystem]);
+  ModalResult := mrOk;
 end;
 
 procedure TSysPropDlg.OutlineDrawItem(Control: TWinControl; Index: Integer;
@@ -352,8 +426,22 @@ begin
 end;
 
 procedure TSysPropDlg.OutlineDblClick(Sender: TObject);
+var
+  s: string;
+  item: TOutlineNode;
 begin
-  ModifyBtn.Click;
+  with Outline do
+  begin
+    if ChildNodeSelected then begin
+      item := Items[SelectedItem];
+      s := item.Text;
+      if InputQuery(LoadStr(SModifyAdvanced), LoadStr(SIdentValue), s) then
+      begin
+        item.Text := s;
+        AdvancedChanged := True;
+      end;
+    end;
+  end;
 end;
 
 procedure TSysPropDlg.TabPanelChange(Sender: TObject; NewTab: Integer;
@@ -415,6 +503,7 @@ begin
       if UserList.Items.IndexOf(Edit1.Text) = -1 then begin
         UserList.Items.Add(Edit1.Text);
         UserIni.WriteString('Users', Edit1.Text, EncryptPassword(Edit2.Text));
+        UserIni.WriteString('Bitmaps', Edit1.Text, Basepath+ 'kruis.bmp');
         rbMultiProfiles.Checked := True; { 3.0 }
       end;
     end;
@@ -489,6 +578,38 @@ procedure TSysPropDlg.StopBtnClick(Sender: TObject);
 begin
   PlaySound('');
 end;
+
+procedure TSysPropDlg.CancelBtnClick(Sender: TObject);
+begin
+ModalResult := mrCancel;
+end;
+
+procedure TSysPropDlg.HelpBtnClick(Sender: TObject);
+ begin
+  Application.HelpFile := 'CALMIRA.HLP';
+  Application.HelpContext(41);
+  ModalResult := mrNone;
+ end;
+
+procedure TSysPropDlg.ClassicChangeBmpClick(Sender: TObject);
+ begin
+  with UserList do if ItemIndex >= 0 then
+    with TChangeUserBmpDlg.Create(Application) do
+    try
+      SelUser.Caption := UserList.Items[Userlist.ItemIndex];
+      BmpLocation.Text := UserIni.ReadString('Bitmaps',SelUser.Caption,'');
+      If FileExists(BmpLocation.Text) then Picture.Picture.LoadFromFile(BmpLocation.Text)
+         else Picture.Picture.LoadFromFile(Basepath+ 'kruis.bmp');
+      ShowModal;
+      if ModalResult = mrOK then
+      begin
+        UserIni.WriteString('Bitmaps', Items[ItemIndex], BmpLocation.Text);
+      end;
+    finally
+      Free;
+    end;
+
+ end;
 
 end.
 

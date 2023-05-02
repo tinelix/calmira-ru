@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -43,7 +46,7 @@ interface
 uses WinTypes, WinProcs, Classes, Forms, Controls, Buttons, CalForm,
   ExtForm, StdCtrls, ExtCtrls, SysUtils, Menus, DragDrop, DropServ,
   Graphics, TabNotBk, Settings, TabPanel, Picbtn, Sysmenu, StylSped,
-  Messages, SortHdr;
+  Messages, SortHdr, Xpbutton;
 
 type
   TFindForm = class(TCalForm)
@@ -68,13 +71,15 @@ type
     StartEdit: TComboBox;
     Label2: TLabel;
     SubFolders: TCheckBox;
-    SearchBtn: TPicBtn;
     Image: TImage;
     BrowseBtn: TStyleSpeed;
     Label3: TLabel;
     MatchCase: TCheckBox;
-    ClearBtn: TPicBtn;
     TextEdit: TComboBox;
+    SearchBtn: TXPButton;
+    ClearBtn: TXPButton;
+    ClassicSearchBtn: TButton;
+    ClassicClearBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure SearchBtnClick(Sender: TObject);
@@ -145,6 +150,19 @@ uses CompSys, Dialogs, Resource, Strings, MiscUtil, Tree, IconWin, OpenFile,
 
 procedure TFindForm.FormCreate(Sender: TObject);
 begin
+  color := kleur1;
+  TabPanel.Color := kleur2;
+  Width := 420;
+  If not ButtonStyle then
+   begin
+    SearchBtn.Visible := false;
+    ClearBtn.Visible := false;
+    ClassicSearchBtn.Visible := true;
+    ClassicClearBtn.Visible :=true;
+    ClassicSearchBtn.Left := 320;
+    ClassicClearBtn.Left := 320;
+   end;
+
   DeleteMenu(GetSystemMenu(Handle, False), SC_SIZE, MF_BYCOMMAND);
   Icon.Assign(Icons.Get('FindDialog'));
   Image.Picture.Icon.Assign(Icon);
@@ -222,6 +240,7 @@ begin
     ListBox.Enabled := Listbox.Items.Count > 0;
     UpdateStatusBar;
   end;
+  modalresult := mrnone;
 end;
 
 { buffers which are kept off the stack }
@@ -443,6 +462,7 @@ begin
     SearchCount := 0;
   end;
   UpdateStatusbar;
+  ModalResult := MrNone;
 end;
 
 procedure TFindForm.ListboxDrawItem(Control: TWinControl; Index: Integer;

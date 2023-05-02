@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -36,7 +39,7 @@ interface
 
 uses
   SysUtils, WinTypes, WinProcs, Messages, Classes, Graphics, Controls,
-  Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, DdeMan, Picbtn;
+  Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, DdeMan, Picbtn, Xpbutton;
 
 type
   TConvertProgEvent = procedure (Sender: TObject;
@@ -45,13 +48,16 @@ type
   TConvertDlg = class(TForm)
     GroupList: TListBox;
     SortItems: TCheckBox;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
     Label1: TLabel;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    ClassicOkBtn: TButton;
+    ClassicCancelBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure GroupListDblClick(Sender: TObject);
+    procedure CancelBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -78,6 +84,17 @@ procedure TConvertDlg.FormCreate(Sender: TObject);
 var
   p: PChar;
 begin
+  Color := kleur1;
+  Height := 302;
+ If not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicOkBtn.Top := 244;
+    ClassicCancelBtn.Top := 244;
+   end;
   DdeMgr.AppName := 'CALMIRA';
   if StartPropDlg.Progman.OpenLink then
     try
@@ -143,7 +160,9 @@ begin
           OnConvertProg(Self, Trim(GroupList.Items[i]), Trim(caption),
             PackStartInfo(command, directory, iconfile, mode, iconindex));
       end;
+     ModalResult := mrOk;
     end;
+
   finally
     progs.Free;
     Desktop.ReleaseCursor;
@@ -152,7 +171,12 @@ end;
 
 procedure TConvertDlg.GroupListDblClick(Sender: TObject);
 begin
-  OKBtn.Click;
+  ModalResult := mrOk;
+end;
+
+procedure TConvertDlg.CancelBtnClick(Sender: TObject);
+begin
+ModalResult := mrCancel;
 end;
 
 end.

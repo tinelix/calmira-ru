@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,7 +29,7 @@ unit OpenFile;
 interface
 
 uses Classes, Forms, Controls, Buttons, StdCtrls, Dialogs, Picbtn, StylSped,
-  Registry;
+  Registry, Xpbutton;
 
 type
   TOpenFileDlg = class(TForm)
@@ -34,16 +37,19 @@ type
     Label1: TLabel;
     Listbox: TListBox;
     OpenDialog: TOpenDialog;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
     BrowseBtn: TStyleSpeed;
     Label2: TLabel;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    ClassicOkBtn: TButton;
+    ClassicCancelBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure BrowseBtnClick(Sender: TObject);
     procedure ListboxClick(Sender: TObject);
     procedure ListboxDblClick(Sender: TObject);
+    procedure CancelBtnClick(Sender: TObject);
   private
     { Private declarations }
     IniCount: Integer;
@@ -69,6 +75,17 @@ var
   TempList: TStringList;
   i: Integer;
 begin
+  color := kleur1;
+  Height := 325;
+  if not ButtonStyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicOkBtn.Top := 264;
+    ClassicCancelBtn.Top := 264;
+   end;
   BrowseBtn.Glyph.Handle := LoadBitmap(HInstance, 'BBBROWSE');
   { Read the combobox history from ini }
   ini.ReadStrings('OpenFileWith', Combo.Items);
@@ -124,6 +141,7 @@ end;
 procedure TOpenFileDlg.OKBtnClick(Sender: TObject);
 begin
   Changed := AddHistory(Combo) or Changed;
+  ModalResult := MrOk;
 end;
 
 procedure TOpenFileDlg.BrowseBtnClick(Sender: TObject);
@@ -150,7 +168,13 @@ end;
 
 procedure TOpenFileDlg.ListboxDblClick(Sender: TObject);
 begin
-  OKBtn.Click;
+  Changed := AddHistory(Combo) or Changed;
+  ModalResult := MrOk;
+end;
+
+procedure TOpenFileDlg.CancelBtnClick(Sender: TObject);
+begin
+ModalResult := mrCancel;
 end;
 
 end.

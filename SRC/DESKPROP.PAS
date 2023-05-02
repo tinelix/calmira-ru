@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -27,7 +30,7 @@ interface
 
 uses WinTypes, WinProcs, Classes, Graphics, Forms, Controls, Buttons, Settings,
   StdCtrls, ExtCtrls, ChkList, TabNotBk, TabPanel, Picbtn, StylSped, Spin,
-  Dialogs, CalColor;
+  Dialogs, CalColor, Xpbutton;
 
 type
   TDeskPropDlg = class(TForm)
@@ -36,10 +39,6 @@ type
     Placement: TRadioGroup;
     Label1: TLabel;
     CheckList: TCheckList;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
-    HelpBtn: TPicBtn;
-    WinDesktop: TStyleSpeed;
     Bevel2: TBevel;
     Label5: TLabel;
     Label3: TLabel;
@@ -48,7 +47,6 @@ type
     ColorPick: TComboBox;
     Sample: TShape;
     Bevel4: TBevel;
-    CustomBtn: TStyleSpeed;
     Label6: TLabel;
     Bevel3: TBevel;
     Label8: TLabel;
@@ -61,8 +59,6 @@ type
     Bevel1: TBevel;
     Bevel5: TBevel;
     FontDialog: TFontDialog;
-    GlobalFontBtn: TStyleSpeed;
-    MenuFontBtn: TStyleSpeed;
     Label2: TLabel;
     Label10: TLabel;
     GlobalFontLabel: TLabel;
@@ -72,6 +68,20 @@ type
     DeskGridWidth: TSpinEdit;
     DeskGridHeight: TSpinEdit;
     Label13: TLabel;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    HelpBtn: TXPButton;
+    WinDesktop: TXPButton;
+    CustomBtn: TXPButton;
+    GlobalFontBtn: TXPButton;
+    MenuFontBtn: TXPButton;
+    ClassicHelpBtn: TButton;
+    ClassicCancelBtn: TButton;
+    ClassicOkBtn: TButton;
+    ClassicWinDesktop: TButton;
+    ClassicCustomBtn: TButton;
+    ClassicGlobalFontBtn: TButton;
+    ClassicMenuFontBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure WinDesktopClick(Sender: TObject);
@@ -82,6 +92,8 @@ type
       Shift: TShiftState);
     procedure GlobalFontBtnClick(Sender: TObject);
     procedure MenuFontBtnClick(Sender: TObject);
+    procedure CancelBtnClick(Sender: TObject);
+    procedure HelpBtnClick(Sender: TObject);
   private
     { Private declarations }
     Changes: TSettingChanges;
@@ -134,6 +146,38 @@ procedure TDeskPropDlg.FormCreate(Sender: TObject);
 var
   c: TCalColor;
 begin
+  Color := kleur1;
+  TabPanel.Color := kleur2;
+  Label5.Font.Color := kleur3;
+  Label6.Font.Color := kleur3;
+  Label3.Font.Color := kleur3;
+  Label10.Font.Color := kleur3;
+  Height := 402;
+  If not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    HelpBtn.Visible := false;
+    WinDesktop.visible := false;
+    CustomBtn.Visible := false;
+    GlobalFontBtn.Visible := false;
+    MenuFontBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicHelpBtn.Visible := true;
+    ClassicWindesktop.visible := true;
+    ClassicCustomBtn.Visible := true;
+    ClassicGlobalFontBtn.Visible := true;
+    ClassicMenuFontBtn.Visible := true;
+    ClassicOkBtn.Top := 344;
+    ClassicCancelBtn.Top := 344;
+    ClassicHelpBtn.Top := 344;
+    ClassicWindesktop.Width :=188;
+    ClassicWindesktop.Left := 132;
+    ClassicCustomBtn.Top := 88;
+    ClassicGlobalFontBtn.Left := 208;
+    ClassicMenuFontBtn.Left := 208;
+   end;
   CheckList.Color := Colors[ccChecklist];
   Changes := [];
   Notebook.PageIndex := 0;
@@ -185,6 +229,7 @@ begin
   end;
   SaveDeskProp;
   AnnounceSettingsChanged(Changes);
+ ModalResult := mrOk;
 end;
 
 { 3.1 }
@@ -268,6 +313,20 @@ begin
     end;
   end;
 end;
+
+
+
+procedure TDeskPropDlg.CancelBtnClick(Sender: TObject);
+begin
+ModalResult := mrCancel;
+end;
+
+procedure TDeskPropDlg.HelpBtnClick(Sender: TObject);
+ begin
+  Application.HelpFile := 'CALMIRA.HLP';
+  Application.HelpContext(44);
+  ModalResult := mrNone;
+ end;
 
 end.
 

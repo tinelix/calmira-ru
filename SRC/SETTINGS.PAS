@@ -1,7 +1,9 @@
 {**************************************************************************}
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    version 3.32                                                          }
+{    Copyright (C) 2002-2003 Lionel Lowie                                  }
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Based on Calmira II Online! Release 3.3                               }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -245,6 +247,14 @@ var
   StartFile    : TFilename; { normally "START.INI" }
   LargeItemHeight: Integer; { 3.0 }
 
+  { Calmira XP Properties }
+  XPStyleColors : Boolean;
+  XPStyleKleur : Boolean;
+  kleur1 : longint; {maincolor in XP windows }
+  kleur2: longint;  {subcolor color in XP windows }
+  kleur3: longint;  {Blue text in XP windows }
+  ButtonStyle: Boolean;
+
   { Internal }
   IsShell : Boolean;
   MultipleProfiles: Boolean;
@@ -281,6 +291,8 @@ procedure LoadFileSysProp;
 procedure SaveFileSysProp;
 procedure LoadBinProp;
 procedure SaveBinProp;
+procedure LoadXpProp;
+procedure SaveXpProp;
 procedure LoadStartProp;
 procedure SaveStartProp;
 procedure LoadTaskProp;
@@ -326,6 +338,7 @@ begin
     AliasExtensionUpper := Uppercase(AliasExtension);
     RepaintBeforeHourglass := ReadInteger('Display', 'RepaintBeforeHourglass', 2);
     CanEditSettings := ReadBool('Calmira', 'CanEditSettings', True);
+
   end;
   LoadSystemProp;
   LoadDeskProp;
@@ -333,6 +346,7 @@ begin
   LoadBinProp;
   LoadTaskProp;
   LoadStartProp;
+  LoadXpProp;
   { install Win95 colour scheme }
   if FirstRun then with TIniFile.Create('control.ini') do
   try
@@ -370,6 +384,42 @@ begin
     WriteBool('Bin', 'DeleteToBin', DeleteToBin);
   end;
 end;
+
+{ XP Properties }
+
+procedure LoadXpProp;
+ begin
+  with ini do
+   begin
+    if ReadBool('XP Properties', 'XPStyleKleur',true) = true then
+     begin
+      kleur1 := $02D8E9EC;
+      kleur2 := $02F4F6F6;
+      kleur3 := $02D54600;
+      XPStyleKleur := true;
+     end
+     else
+      begin
+       kleur1 := $02C8D0D4;
+       kleur2 := $02C8D0D4;
+       kleur3 := clBlack;
+      end;
+
+ if ReadBool ('XP Properties', 'XPStyledButtons',true) = true then
+   ButtonStyle := true
+   else
+   ButtonStyle := False;
+  end;
+ end;
+
+procedure SaveXpProp;
+ begin
+   with ini do
+    begin
+     WriteBool('XP Properties', 'XPStyleKleur',XPStyleKleur);
+     WriteBool('XP Properties', 'XPStyledButtons',ButtonStyle);
+    end;
+  end;
 
 { Desktop properties }
 

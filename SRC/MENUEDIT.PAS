@@ -1,7 +1,9 @@
 {**************************************************************************}
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    version 3.33                                                          }
+{    Copyright (C) 2002-2003 Lionel Lowie                                  }
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Based on Calmira II Online! Release 3.3                               }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -32,7 +34,7 @@ unit MenuEdit;
 interface
 
 uses Classes, Forms, Controls, Buttons, StdCtrls, ExtCtrls, Dialogs,
-  StylSped, Icondlg, SysUtils, TabNotBk, TabPanel, Picbtn;
+  StylSped, Icondlg, SysUtils, TabNotBk, TabPanel, Picbtn, Xpbutton;
 
 type
   TMenuEditDlg = class(TForm)
@@ -48,9 +50,6 @@ type
     FolderEdit: TEdit;
     Label5: TLabel;
     BrowseIcon: TStyleSpeed;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
-    HelpBtn: TPicBtn;
     BrowseFolder: TStyleSpeed;
     BrowseCommand: TStyleSpeed;
     ShowCombo: TComboBox;
@@ -60,6 +59,12 @@ type
     TargetIcon: TImage;
     CaptionLabel: TLabel;
     IconEdit: TComboBox;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    HelpBtn: TXPButton;
+    ClassicOkBtn: TButton;
+    ClassicCancelBtn: TButton;
+    ClassicHelpBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure BrowseCommandClick(Sender: TObject);
@@ -69,6 +74,9 @@ type
     { 3.1 }
     procedure CaptionEditExit(Sender: TObject);
     procedure CommandEditExit(Sender: TObject);
+    procedure OkBtnClick(Sender: TObject);
+    procedure CancelBtnClick(Sender: TObject);
+    procedure HelpBtnClick(Sender: TObject);
   private
     { Private declarations }
     SaveHistory: Boolean;
@@ -91,6 +99,21 @@ uses Graphics, ShellAPI, Strings, Settings, Start, WinProcs, WinTypes,
 
 procedure TMenuEditDlg.FormCreate(Sender: TObject);
 begin
+  Color := kleur1;
+  Tabpanel.Color := kleur2;
+  Height := 402;
+  if not ButtonStyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    HelpBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicHelpBtn.Visible := true;
+    ClassicOkBtn.Top := 344;
+    ClassicCancelBtn.Top := 344;
+    ClassicHelpBtn.Top := 344;
+   end;
   Notebook.PageIndex := 0;
   ini.ReadStrings('IconSources', IconDialog.HistoryList);
   { 3.1 }
@@ -232,6 +255,21 @@ begin
   FileRef.IconFile := ExtractIconFile(IconEdit.Text);
   FileRef.IconIndex := ExtractIconIndex(IconEdit.Text);
   FileRef.AssignIcon(TargetIcon.Picture.Icon);
+end;
+
+procedure TMenuEditDlg.OkBtnClick(Sender: TObject);
+begin
+ModalResult := MrOk;
+end;
+
+procedure TMenuEditDlg.CancelBtnClick(Sender: TObject);
+begin
+ModalResult := mrCancel;
+end;
+
+procedure TMenuEditDlg.HelpBtnClick(Sender: TObject);
+begin
+ModalResult := mrNone;
 end;
 
 end.

@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.32                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,7 +29,8 @@ unit Refedit;
 interface
 
 uses Classes, Forms, Controls, Buttons, StdCtrls, ExtCtrls, Dialogs,
-  StylSped, Icondlg, SysUtils, TabNotBk, Referenc, TabPanel, Picbtn;
+  StylSped, Icondlg, SysUtils, TabNotBk, Referenc, TabPanel, Picbtn,
+  Xpbutton;
 
 type
   TRefEditDlg = class(TForm)
@@ -41,9 +45,6 @@ type
     Label2: TLabel;
     IconEdit: TEdit;
     BrowseIcon: TStyleSpeed;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
-    HelpBtn: TPicBtn;
     BrowseTarget: TStyleSpeed;
     FilePanel: TPanel;
     Label3: TLabel;
@@ -57,6 +58,12 @@ type
     CaptionLabel: TLabel;
     TargetIcon: TImage;
     TargetBevel: TBevel;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    HelpBtn: TXPButton;
+    ClassicOkBtn: TButton;
+    ClassicCancelBtn: TButton;
+    ClassicHelpBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -70,6 +77,9 @@ type
     { 3.1 }
     procedure CapEditExit(Sender: TObject);
     procedure TargetEditExit(Sender: TObject);
+    procedure OkBtnClick(Sender: TObject);
+    procedure CancelBtnClick(Sender: TObject);
+    procedure HelpBtnClick(Sender: TObject);
   private
     { Private declarations }
     SaveHistory: Boolean;
@@ -111,6 +121,21 @@ end;
 
 procedure TRefEditDlg.FormCreate(Sender: TObject);
 begin
+  Color := kleur1;
+  Height := 402;
+  If not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    HelpBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicHelpBtn.Visible := true;
+    ClassicOkBtn.Top := 344;
+    ClassicCancelBtn.Top := 344;
+    ClassicHelpBtn.Top := 344;
+   end;
+  Tabpanel.Color := kleur2;
   Notebook.PageIndex := 0;
   ini.ReadStrings('IconSources', IconDialog.HistoryList);
   { 3.1 }
@@ -219,6 +244,21 @@ begin
   FileRef.IconIndex := ExtractIconIndex(IconEdit.Text);
   FileRef.AssignIcon(TargetIcon.Picture.Icon);
   FileRef.Kind := LastKind;
+end;
+
+procedure TRefEditDlg.OkBtnClick(Sender: TObject);
+begin
+ModalResult := mrOk;
+end;
+
+procedure TRefEditDlg.CancelBtnClick(Sender: TObject);
+begin
+ModalResult := MrCancel;
+end;
+
+procedure TRefEditDlg.HelpBtnClick(Sender: TObject);
+begin
+ModalResult := mrNone;
 end;
 
 end.

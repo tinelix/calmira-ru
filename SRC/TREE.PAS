@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -67,7 +70,7 @@ interface
 uses SysUtils, WinTypes, WinProcs, Messages, Classes, Graphics, Controls,
   Forms, Dialogs, Grids, Outline, StdCtrls, IconWin, Menus, ExtCtrls,
   CalForm, ExtForm, Settings, Scrtree, CalMsgs, Sysmenu, Buttons,
-  Picbtn, NetDlgs;
+  Picbtn, NetDlgs, Xpbutton;
 
 type
   TExplorer = class(TCalForm)
@@ -83,8 +86,6 @@ type
     N2: TMenuItem;
     RefreshTree: TMenuItem;
     Outline: TScrollTree;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
     MapNetwork: TMenuItem;
     DisconnectNetwork: TMenuItem;
     N3: TMenuItem;
@@ -97,6 +98,10 @@ type
     NetStopShareDialog: TNetStopShareDialog;
     Properties: TMenuItem;
     Label1: TLabel;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    ClassicOkBtn: TButton;
+    ClassicCancelBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure OutlineDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
@@ -135,6 +140,8 @@ type
     procedure StopSharingClick(Sender: TObject);
     procedure PropertiesClick(Sender: TObject);
     procedure FormPaint(Sender: TObject);
+    procedure CancelBtnClick(Sender: TObject);
+    procedure OkBtnClick(Sender: TObject);
   private
     { Private declarations }
     FilePane: TIconWindow;
@@ -249,6 +256,18 @@ end;
 
 procedure TExplorer.FormCreate(Sender: TObject);
 begin
+  Height := 304;
+  If not ButtonStyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicOkBtn.Top := 245;
+    ClassicCancelBtn.Top := 245;
+   end;
+
+  Color := kleur1;
   DriveCaptions := TStringList.Create;
   Icon.Assign(Icons.Get('EXPLORER'));
   Configure;
@@ -257,6 +276,8 @@ begin
     Label1.Free;
     OKBtn.Free;
     CancelBtn.Free;
+    ClassicOkBtn.Free;
+    ClassicCancelBtn.Free;
   end;
   { 3.11 }
   if NetDriver = 0 then
@@ -974,6 +995,16 @@ begin
       Free;
     end;
   end;
+end;
+
+procedure TExplorer.CancelBtnClick(Sender: TObject);
+begin
+ModalResult := mrCancel;
+end;
+
+procedure TExplorer.OkBtnClick(Sender: TObject);
+begin
+ModalResult := mrOk;
 end;
 
 end.

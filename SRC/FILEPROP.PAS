@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -36,15 +39,12 @@ interface
 
 uses WinTypes, WinProcs, Classes, Graphics, Forms, Controls,
   Buttons, StdCtrls, ExtCtrls, Directry, TabNotBk, Dialogs,
-  LabelSel, Picbtn, TabPanel, Registry, StylSped, SortHdr;
+  LabelSel, Picbtn, TabPanel, Registry, StylSped, SortHdr, Xpbutton;
 
 type
   TFilePropDlg = class(TForm)
     LabelSel: TLabelSelect;
     OpenDialog: TOpenDialog;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
-    HelpBtn: TPicBtn;
     TabPanel: TTabPanel;
     Notebook: TNotebook;
     Label5: TLabel;
@@ -102,6 +102,12 @@ type
     Label14: TLabel;
     AssocList: TListBox;
     BrowseBtn: TStyleSpeed;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    HelpBtn: TXPButton;
+    ClassicHelpBtn: TButton;
+    ClassicCancelBtn: TButton;
+    ClassicOkBtn: TButton;
     procedure OKBtnClick(Sender: TObject);
     procedure ReadOnlyClick(Sender: TObject);
     procedure TotalLabClick(Sender: TObject);
@@ -120,6 +126,8 @@ type
       var AllowChange: Boolean);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure CancelBtnClick(Sender: TObject);
+    procedure HelpBtnClick(Sender: TObject);
   private
     { Private declarations }
     Item: TObject;
@@ -350,6 +358,7 @@ procedure TFilePropDlg.OKBtnClick(Sender: TObject);
 begin
   if AttrChanged then SaveAttributes;
   if AssocChanged then SaveAssociation;
+  Modalresult := mrOk;
 end;
 
 procedure TFilePropDlg.ReadOnlyClick(Sender: TObject);
@@ -440,6 +449,22 @@ end;
 
 procedure TFilePropDlg.FormCreate(Sender: TObject);
 begin
+  Color := kleur1;
+  TabPanel.Color := kleur2;
+  AssocLabel.Font.Color := kleur3;
+  Height := 402;
+  If not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    HelpBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicHelpBtn.Visible := true;
+    ClassicOkBtn.Top := 344;
+    ClassicCancelBtn.Top := 344;
+    ClassicHelpBtn.Top := 344;
+   end;
   Notebook.PageIndex := 0;
   VerInfoList.ItemHeight := LineHeight;
   FileTypes := TStringList.Create;
@@ -572,6 +597,18 @@ begin
   if (Key = VK_TAB) and (ssCtrl in Shift) then
     TabPanel.SelectNext(not (ssShift in Shift));
 end;
+
+procedure TFilePropDlg.CancelBtnClick(Sender: TObject);
+begin
+Modalresult := mrCancel;
+end;
+
+procedure TFilePropDlg.HelpBtnClick(Sender: TObject);
+ begin
+  Application.HelpFile := 'CALMIRA.HLP';
+  Application.HelpContext(46);
+  ModalResult := mrNone;
+ end;
 
 end.
 

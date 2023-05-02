@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,19 +29,23 @@ unit GotoFld;
 interface
 
 uses WinTypes, Messages, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls,
-  Buttons, PicBtn, ExtCtrls, SysMenu;
+  Buttons, PicBtn, ExtCtrls, SysMenu, Xpbutton;
 
 type
   TGotoDlg = class(TForm)
     Image: TImage;
     Label1: TLabel;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
     Combo: TComboBox;
     Label2: TLabel;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    ClassicOkBtn: TButton;
+    ClassicCancelBtn: TButton;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure OkBtnClick(Sender: TObject);
+    procedure CancelBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -90,6 +97,17 @@ end;
 
 procedure TGotoDlg.FormCreate(Sender: TObject);
 begin
+  Color := kleur1;
+  Height := 178;
+  if not ButtonStyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicOkBtn.Top := 115;
+    ClassicCancelBtn.Top := 115;
+   end;
   Image.Picture.Icon.Assign(Icons.Get('GotoDialog'));
   ini.ReadStrings('GotoFolder', Combo.Items);
 end;
@@ -103,6 +121,16 @@ end;
 procedure TGotoDlg.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caFree;
+end;
+
+procedure TGotoDlg.OkBtnClick(Sender: TObject);
+begin
+ModalResult := mrOk;
+end;
+
+procedure TGotoDlg.CancelBtnClick(Sender: TObject);
+begin
+ModalResult := MrCancel;
 end;
 
 end.

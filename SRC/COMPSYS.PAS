@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -103,6 +106,7 @@ type
     Explore: TMenuItem;
     OpenFolder: TMenuItem;
     N10: TMenuItem;
+    ConfigXPProperties: TMenuItem;
     procedure FormDestroy(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure GridDblClick(Sender: TObject);
@@ -147,6 +151,7 @@ type
     procedure ConfigBinClick(Sender: TObject);
     procedure ConfigTaskbarClick(Sender: TObject);
     procedure ConfigFileSystemClick(Sender: TObject);
+    procedure ConfigXPPropertiesClick(sender: TObject);
     procedure ObjectMenuPopup(Sender: TObject);
     procedure SysPropertiesClick(Sender: TObject);
     procedure DeskCascadeBrowsersClick(Sender: TObject);
@@ -225,7 +230,7 @@ uses Desk, Shorts, DiskProp, Directry, About, IconWin, WinProcs, Drives,
   FileFind, IniFiles, Resource, Strings, MiscUtil, Files, FileMan, Environs,
   WasteBin, Graphics, Tree, ShutDown, RunProg, Referenc, ChkList, ShellAPI,
   StrtProp, DeskProp, TaskProp, SysProp, FSysProp, BinProp, ClipBrd, Tips,
-  Locale, Task, TaskMan, Embed, GotoFld;
+  Locale, Task, TaskMan, Embed, GotoFld, XpProp;
 
 { This unit is responsible for opening various non-modal windows.
   Inconsistencies will arise if non-modal icon windows are opened while
@@ -374,7 +379,7 @@ end;
 procedure TComputer.Configure;
 begin
   Caption := ComputerCaption;
-  Color := Colors[ccWinFrame];
+  Color := kleur1;
   with Grid do
   begin
     Visible := False;
@@ -736,7 +741,7 @@ begin
 end;
 
 const
-  MacroList : array[0..22] of PChar =
+  MacroList : array[0..23] of PChar =
     ({0}'$Help',
      {1}'$System',
      {2}'$Bin',
@@ -759,7 +764,8 @@ const
      {19}'$Folder',
      {20}'$LargeIconFolder',
      {21}'$SmallIconFolder',
-     {22}'$ListFolder');
+     {22}'$ListFolder',
+     {23}'$XpProp');
 
 function FindCommand(const Cmds: array of PChar; const s: string): Integer;
 var
@@ -798,6 +804,7 @@ begin
     17: DeskClearDesktop.Click;
     18: DeskMinimizePrograms.Click;
     19..22: ExecuteFolderMacro(CommandID - 19, params);
+    23: ConfigXPProperties.Click;
   else
     MsgDialogResFmt(SUnknownCommand, [macro], mtError, [mbOK], 0);
   end;
@@ -952,6 +959,11 @@ end;
 procedure TComputer.ConfigFileSystemClick(Sender: TObject);
 begin
   if not CheckDialogModal then ShowModalDialog(TFileSysPropDlg);
+end;
+
+procedure TComputer.ConfigXPPropertiesClick(sender: TObject);
+begin
+  if not CheckDialogModal then ShowModalDialog(TXpPropDlg);
 end;
 
 procedure TComputer.ObjectMenuPopup(Sender: TObject);

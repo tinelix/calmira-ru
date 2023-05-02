@@ -1,7 +1,9 @@
 {**************************************************************************}
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    version 3.33                                                          }
+{    Copyright (C) 2002-2003 Lionel Lowie                                  }
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Based on Calmira II Online! Release 3.3                               }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,29 +28,37 @@ unit About;
 interface
 
 uses WinTypes, WinProcs, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, Picbtn;
+  Buttons, ExtCtrls, Picbtn, Xpbutton;
 
 type
   TAboutBox = class(TForm)
-    AppLogo: TImage;
     VersionLabel: TLabel;
     Copy1Label: TLabel;
     Copy2Label: TLabel;
     HomepageLabel: TLabel;
-    Bevel1: TBevel;
     LicenceLabel: TLabel;
-    LicenseBtn: TPicBtn;
-    OKButton: TPicBtn;
-    Bevel2: TBevel;
     Label3: TLabel;
     Label4: TLabel;
     MemLabel: TLabel;
     ResLabel: TLabel;
-    AppTitle: TImage;
+    Emaillabel: TLabel;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Bevel2: TBevel;
+    Bevel1: TBevel;
+    Loadlin: TImage;
+    AppLogo: TImage;
+    Label2: TLabel;
+    XPHomepagelabel: TLabel;
+    OkBtn: TXPButton;
+    LicenseBtn: TXPButton;
+    ClassicOkBtn: TButton;
+    ClassicLicenseBtn: TButton;
     procedure LicenseBtnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure HomepageLabelClick(Sender: TObject);
     procedure AppLogoClick(Sender: TObject);
+    procedure OKBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -82,14 +92,24 @@ end;
 
 procedure TAboutBox.FormCreate(Sender: TObject);
 begin
+  Height := 365;
+  If not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicLicenseBtn.Visible := true;
+    ClassicOkBtn.Top := 304;
+    ClassicLicenseBtn.Top := 304;
+  end;
+
   MemLabel.Caption := FormatByte(GetFreeSpace(0), 2, 2) + ' free';
   ResLabel.Caption := Format('System %d%%  GDI %d%%  User %d%%',
     [GetFreeSystemResources(GFSR_SYSTEMRESOURCES),
      GetFreeSystemResources(GFSR_GDIRESOURCES),
      GetFreeSystemResources(GFSR_USERRESOURCES)]);
-  AppLogo.Picture.Bitmap.Handle := LoadBitmap(HInstance, 'LOGO');
-  AppTitle.Picture.Bitmap.Handle := LoadBitmap(HInstance, 'TITLE');
-  if FirstRun then
+  AppLogo.Picture.Bitmap.Handle := LoadBitmap(HInstance, 'XPLOGO');
+  Loadlin.Picture.Bitmap.Handle := LoadBitmap(HInstance, 'LOADLIN');
+if FirstRun then
   begin
     Caption := LoadStr(SWelcome);
     FirstRun := False;
@@ -98,14 +118,19 @@ end;
 
 procedure TAboutBox.HomepageLabelClick(Sender: TObject);
 begin
-  OKButton.Click;
+  modalresult := mrOk;
   { 2.2 added http:// }
-  OpenURL('http://www.calmira.org');
+  OpenURL('http://www.calmira.de');
 end;
 
 procedure TAboutBox.AppLogoClick(Sender: TObject);
 begin
   Desktop.Revert;
+end;
+
+procedure TAboutBox.OKBtnClick(Sender: TObject);
+begin
+ModalResult := mrOk
 end;
 
 end.

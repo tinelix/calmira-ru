@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.32                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,7 +29,7 @@ unit Progress;
 interface
 
 uses SysUtils, Classes, Controls, Forms, StdCtrls, Buttons, ExtCtrls,
-  BarGauge, Picbtn;
+  BarGauge, Picbtn, Xpbutton;
 
 type
   TFileOperation = (foCopy, foMove, foDelete, foBinning,
@@ -42,7 +45,8 @@ type
     CopiedLabel: TLabel;
     BytesLabel: TLabel;
     Gauge: TWin95Gauge;
-    CancelBtn: TPicBtn;
+    CancelBtn: TXPButton;
+    ClassicCancelBtn: TButton;
     procedure CancelBtnClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormHide(Sender: TObject);
@@ -132,6 +136,7 @@ end;
 procedure TProgressBox.CancelBtnClick(Sender: TObject);
 begin
   FAbortOp := True;
+  ModalResult := mrCancel;
 end;
 
 procedure TProgressBox.FormShow(Sender: TObject);
@@ -180,6 +185,14 @@ end;
 
 procedure TProgressBox.FormCreate(Sender: TObject);
 begin
+  Color := kleur1;
+  Width := 380;
+  if not ButtonStyle then
+   begin
+    CancelBtn.Visible := false;
+    ClassicCancelBtn.Visible := true;
+    ClassicCancelBtn.Left := 288;
+   end;
   Image.Picture.Icon.Assign(Icons.Get('ProgressDialog'));
 end;
 

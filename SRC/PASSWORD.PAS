@@ -27,7 +27,7 @@ interface
 
 uses
   SysUtils, WinTypes, WinProcs, Messages, Classes, Graphics, Controls,
-  Forms, Dialogs, StdCtrls, Buttons, Picbtn;
+  Forms, Dialogs, StdCtrls, Buttons, Picbtn, Settings;
 
 type
   TPasswordDlg = class(TForm)
@@ -40,6 +40,7 @@ type
     OKBtn: TPicBtn;
     CancelBtn: TPicBtn;
     procedure OKBtnClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     previous: string;
@@ -142,6 +143,11 @@ begin
     MsgDialogRes(SInvalidOldPassword, mtError, [mbOK], 0)
   else
     MsgDialogRes(SPasswordMismatch, mtError, [mbOK], 0);
+end;
+
+procedure TPasswordDlg.FormCreate(Sender: TObject);
+begin
+Color := kleur1;
 end;
 
 end.

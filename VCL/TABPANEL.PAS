@@ -2,13 +2,14 @@
 {                                                         }
 {    Calmira System library 3.3                           }
 {    by Li-Hsin Huang & Erwin Dokter                      }
+{    Edited by Lionel Lowie for Calmira XP                }
 {    released into the public domain may 2002             }
 {                                                         }
 {*********************************************************}
 
 unit TabPanel;
 
-{ Windows 95 style Tab Control
+{ Windows XP style Tab Control (based on Win95 style tab)
 
   Use this component in conjuction with a TNoteBook to create a
   'property sheet' style page control. Place the notebook ON the
@@ -87,7 +88,7 @@ type
     property TabOrder;
     property TabStop;
     property Visible;
-  end;
+   end;
 
 procedure Register;
 
@@ -305,17 +306,17 @@ begin {TTabPanel.Paint}
       Brush.Style := bsSolid;
       Brush.Color := Color;
       FillRect(Rect(0, FTabHeight + 1, Width - 2, Height - 2));
-      { top left highlight }
+     { top left highlight }
       Pen.Color := clBtnHighlight;
       MoveTo(0, FTabHeight);
       LineTo(0, Height - 1);
       { bottom right shadow }
-      Pen.Color := clBtnShadow;
+      Pen.Color := $02BFCED0;
       MoveTo(1, Height - 2);
       LineTo(Width - 2, Height - 2);
       LineTo(Width - 2, FTabHeight);
       { bottom right edge }
-      Pen.Color := clWindowFrame;
+      Pen.Color := $029C9B91;
       MoveTo(Width - 1, FTabHeight);
       LineTo(Width - 1, Height - 1);
       LineTo(-1, Height - 1);
@@ -340,7 +341,8 @@ begin {TTabPanel.Paint}
       w := buffer.Canvas.TextWidth(s);
       h := buffer.Canvas.TextHeight(s);
       x2 := x1 + w + 12;
-      if (i = TabIndex) then y := 0
+
+     if (i = TabIndex) then y := 0
       else y := 2;
       with buffer.Canvas do
       begin
@@ -348,41 +350,51 @@ begin {TTabPanel.Paint}
         tx := x1 - 1 + (x2 - x1 - w) div 2;
         ty := y + 3;
         TextOut(tx, ty, s);
-        if (i = TabIndex) and Focused then
-          DrawFocusRect(Bounds(tx - 4, ty, w + 9, h + 2));
-        Pen.Color := clBtnHighlight;
-        if (i = FTabIndex - 1) then
+        if (i = TabIndex)then
+        Brush.Color := $023CC7FF;
+        FillRect(Rect(x1, ty - 2, x2, h - 9));
+
+       if (i = FTabIndex - 1) then
         begin
+          Pen.Color := $02D8E9EC;
           MoveTo(x1 + 2, y);
           LineTo(x2 - 1, y);
           PaintEdge(i, x1);
         end
+
         else if (i = FTabIndex + 1) then
         begin
+          {Brush.Color := $02D8E9EC;
           MoveTo(x1, y);
           LineTo(x2 - 2, y);
-          PaintEdge(i, x1);
+          PaintEdge(i, x1);}
         end
+
         else if (i = FTabIndex) then
         begin
+          Pen.Color := $02D8E9EC;
           MoveTo(x1, y);
           LineTo(x2, y);
+          Pen.Color := $02D8E9EC;
           MoveTo(0, FTabHeight);
           LineTo(x1 - 1, FTabHeight);
           MoveTo(x2 + 1, FTabHeight);
+          Pen.Color := $02D8E9EC;
           LineTo(Width - 1, FTabHeight);
           PaintEdge(i, x1 - 2);
         end
         else
         begin
+          Pen.Color := $02D8E9EC;
           MoveTo(x1 + 2, y);
           LineTo(x2 - 2, y);
           PaintEdge(i, x1);
         end;
         Pixels[Width - 1, FTabHeight] := clWindowFrame;
       end;
-      { Special case for rightmost tab edge }
-      if (i = Tabs.Count - 1) then PaintShadowEdge(i, x2, i = TabIndex);
+
+       {Special case for rightmost tab edge}
+      {if (i = Tabs.Count - 1) then PaintShadowEdge(i, x2, i = TabIndex);}
       x1 := x2;
       { Store the right hand edge of each tab in the Objects array so that
         the mouse handler can make use of it. }

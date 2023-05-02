@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.32                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,24 +29,34 @@ unit Shutdown;
 interface
 
 uses WinTypes, WinProcs, Classes, Graphics, Forms, Controls, Buttons,
-  StdCtrls, ExtCtrls, Messages, Picbtn, Sysmenu;
+     StdCtrls, ExtCtrls, Messages, Sysmenu, Xpbutton, Logon;
+
+
 
 type
   TQuitDlg = class(TForm)
-    rbDOS: TRadioButton;
-    rbRestart: TRadioButton;
-    rbReboot: TRadioButton;
-    rbQuit: TRadioButton;
-    Image: TImage;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
+    CancelBtn: TXPButton;
     Label1: TLabel;
-    procedure OKBtnClick(Sender: TObject);
+    XPLogo: TImage;
+    ShutDownBalk: TImage;
+    Panel1: TPanel;
+    GoToDOS: TImage;
+    RestartWindows: TImage;
+    RebootComputer: TImage;
+    RebootLabel: TLabel;
+    RestartLabel: TLabel;
+    ExitLabel: TLabel;
+    QuitCalmira: TLabel;
+    procedure CancelBtnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure RebootComputerClick(Sender: TObject);
+    procedure RestartWindowsClick(Sender: TObject);
+    procedure GoToDOSClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure rbDOSDblClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure ImageDblClick(Sender: TObject);
+    procedure XPLogoDblClick(Sender: TObject);
+    procedure QuitCalmiraClick(Sender: TObject);
+
   private
     { Private declarations }
     procedure DarkenScreen;
@@ -56,72 +69,52 @@ implementation
 
 {$R *.DFM}
 
-uses SysUtils, MiscUtil, Settings, Desk, Task, IniFiles, Resource, Files,
+uses Sysutils, MiscUtil, Settings, Desk, Task, IniFiles, Resource, Files,
   CompSys, Strings;
 
-{
-var
-  QuitDlg: TQuitDlg;
-}
+procedure TQuitDlg.FormCreate(Sender: TObject);
+ begin
+  XPLogo.Picture.Bitmap.Handle := LoadBitmap(HInstance, 'XPLOGOKLEIN');
+  RebootComputer.Picture.Bitmap.Handle := LoadBitmap(HInstance, 'SHUTDOWN1');
+  GoToDOS.Picture.Bitmap.Handle := LoadBitmap(HInstance, 'SHUTDOWN3');
+  RestartWindows.Picture.Bitmap.Handle := LoadBitmap(HInstance, 'SHUTDOWN2');
+  ShutDownBalk.Picture.Bitmap.Handle := LoadBitmap(HInstance, 'SHUTDOWN4');
+  If IsShell then
+  QuitCalmira.Visible := False
+  else
+  QuitCalmira.Visible := True;
+ end;
 
-procedure TQuitDlg.OKBtnClick(Sender: TObject);
-var
-  i: Integer;
-begin
-  i := GetRadioIndex([rbDOS, rbRestart, rbReboot, rbQuit]);
+procedure TQuitDlg.RebootComputerClick(Sender: TObject);
+ begin
   ShowHourglass;
   Release;
   Desktop.Save;
-  if (i < 3) and ShowShutDownBMP then DrawShutDownBMP;
-  case i of
-    0: ExitWindows(0, 0);
-    1: ExitWindows(EW_RESTARTWINDOWS, 0);
-    2: ExitWindows(EW_REBOOTSYSTEM, 0);
-    3: Application.Terminate;
-  end;
-end;
+  if ShowShutDownBMP then DrawShutDownBMP;
+  ExitWindows(EW_REBOOTSYSTEM, 0);
+  
+ end;
 
-procedure TQuitDlg.FormCreate(Sender: TObject);
-begin
-  Image.Picture.Icon.Assign(Icons.Get('ShutDownDialog'));
-  with rbQuit do
-  begin
-    Visible := not IsShell;
-    Checked := not IsShell;
-  end;
-end;
+procedure TQuitDlg.RestartWindowsClick(Sender: TObject);
+ begin
+  ShowHourglass;
+  Release;
+  Desktop.Save;
+  if ShowShutDownBMP then DrawShutDownBMP;
+  ExitWindows(EW_RESTARTWINDOWS, 0);
 
-procedure TQuitDlg.FormShow(Sender: TObject);
-begin
-  SetSysModalWindow(Handle);
-  { Prevent redrawing the active windows' caption }
-  SetActiveWindow(Handle);
-  if ShowShutDownBMP then DarkenScreen;
-end;
+ end;
 
-procedure TQuitDlg.rbDOSDblClick(Sender: TObject);
-begin
-  OKBtn.Click;
-end;
+procedure TQuitDlg.GoToDOSClick(Sender: TObject);
+ begin
+  ShowHourglass;
+  Release;
+  Desktop.Save;
+  if ShowShutDownBMP then DrawShutDownBMP;
+  ExitWindows(0,0);
+ 
+ end;
 
-procedure TQuitDlg.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  Desktop.Repaint;
-  Action := caFree;
-end;
-
-procedure TQuitDlg.ImageDblClick(Sender: TObject);
-begin
-  with TIniFile.Create('system.ini') do
-  begin
-    if IsShell then
-      WriteString('Boot', 'Shell', 'progman.exe')
-    else
-      WriteString('Boot', 'Shell', Application.Exename);
-    Free;
-  end;
-  OKBtn.Click;
-end;
 
 procedure TQuitDlg.DarkenScreen;
 var
@@ -156,6 +149,44 @@ begin
     bmp.Canvas.Handle, 0, 0, bmp.Width, bmp.Height, SRCCOPY);
   ReleaseDC(0, dc);
   bmp.Free;
+end;
+
+procedure TQuitDlg.CancelBtnClick(Sender: TObject);
+ begin
+  ModalResult := mrCancel;
+ end;
+
+procedure TQuitDlg.FormShow(Sender: TObject);
+ begin
+  SetSysModalWindow(Handle);
+   { Prevent redrawing the active windows' caption }
+   SetActiveWindow(Handle);
+   if ShowShutDownBMP then DarkenScreen;
+ end;
+
+procedure TQuitDlg.FormClose(Sender: TObject; var Action: TCloseAction);
+ begin
+  Desktop.Repaint;
+  Action := caFree;
+end;
+
+procedure TQuitDlg.XPLogoDblClick(Sender: TObject);
+begin
+ with TIniFile.Create('system.ini') do
+  begin
+    if IsShell then
+      WriteString('Boot', 'Shell', 'progman.exe')
+    else
+      WriteString('Boot', 'Shell', Application.Exename);
+    Free;
+  end;
+ ExitWindows(EW_RESTARTWINDOWS, 0);
+end;
+
+procedure TQuitDlg.QuitCalmiraClick(Sender: TObject);
+begin
+Desktop.Repaint;
+Application.Terminate;
 end;
 
 end.

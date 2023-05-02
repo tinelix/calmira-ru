@@ -70,7 +70,7 @@ end;
 
 procedure TStyleSpeed.Paint;
 const
-  FlatColors: array[Boolean] of TColor = (clBtnShadow, clBtnHighlight);
+  FlatColors: array[Boolean] of TColor = ($02D8E9EC, $02D8E9EC);
 var
   ParentClass: TClass;
   x: Integer;
@@ -80,14 +80,14 @@ begin
     sbWin95:
       with Canvas do
       if FState in [bsDown, bsExclusive] then begin
-        Pen.Color := clBtnHighlight;
+        Pen.Color := $02D8E9EC;
         PolyLine([Point(Width - 1, 1),
                   Point(Width - 1, Height - 1),
                   Point(0, Height - 1)]);
       end
       else
       begin
-        Pen.Color := clBtnHighlight;
+        Pen.Color := $02D8E9EC;
         PolyLine([Point(0, Height - 1),
                   Point(0, 0),
                   Point(Width - 1, 0)]);
@@ -101,7 +101,7 @@ begin
     sbFlat: { 3.1 }
       with Canvas do
       begin
-        Pen.Color := clBtnFace;
+        Pen.Color := $02D8E9EC;
         Rectangle(1, 1, Width - 1, Height - 1);
         if not (FMouseOver or (FState in [bsDown, bsExclusive])) then
           Rectangle(0, 0, Width, Height)
@@ -121,10 +121,10 @@ begin
         try
           Control := Parent;
           x := Left - 5;
-          Pen.Color := clBtnShadow;
+          Pen.Color := $02D8E9EC;
           MoveTo(x, Top);
           LineTo(x, Top + Height);
-          Pen.Color := clBtnHighlight;
+          Pen.Color := $02D8E9EC;
           MoveTo(x + 1, Top);
           LineTo(x + 1, Top + Height);
         finally

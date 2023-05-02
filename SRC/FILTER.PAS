@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,19 +29,23 @@ unit Filter;
 interface
 
 uses
-  Classes, Controls, Forms, StdCtrls, Buttons, ExtCtrls, Directry, Picbtn;
+  Classes, Controls, Forms, StdCtrls, Buttons, ExtCtrls, Directry, Picbtn,
+  Xpbutton;
 
 type
   TFilterDialog = class(TForm)
     Label1: TLabel;
     FilterEdit: TComboBox;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
     cbHidSys: TCheckBox;
     Label2: TLabel;
     Image: TImage;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    ClassicOkBtn: TButton;
+    ClassicCancelBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
+    procedure CancelBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -76,8 +83,20 @@ end;
 
 procedure TFilterDialog.FormCreate(Sender: TObject);
 begin
+  color := kleur1;
   Image.Picture.Icon.Assign(Icons.Get('MultiFile'));
   ini.ReadStrings('Browser Filters', FilterEdit.Items);
+  height := 178;
+  if not ButtonStyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible:=false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicOkBtn.Top := 116;
+    ClassicCancelBtn.Top := 116;
+   end;
+    
 end;
 
 procedure TFilterDialog.OKBtnClick(Sender: TObject);
@@ -89,6 +108,12 @@ begin
   end;
   if AddHistory(FilterEdit) then
     ini.WriteNewStrings('Browser Filters', FilterEdit.Items);
+  modalresult := mrok;
+end;
+
+procedure TFilterDialog.CancelBtnClick(Sender: TObject);
+begin
+Modalresult := mrCancel;
 end;
 
 end.

@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,7 +29,7 @@ unit Binprop;
 interface
 
 uses WinTypes, WinProcs, Classes, Graphics, Forms, Controls, Buttons,
-  StdCtrls, Spin, TabNotBk, ExtCtrls, Chklist, TabPanel, Picbtn;
+  StdCtrls, Spin, TabNotBk, ExtCtrls, Chklist, TabPanel, Picbtn, Xpbutton;
 
 type
   TBinPropDlg = class(TForm)
@@ -48,13 +51,18 @@ type
     cbDeleteToBin: TCheckBox;
     SizeEdit: TSpinEdit;
     rbDelete: TRadioButton;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
-    HelpBtn: TPicBtn;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    HelpBtn: TXPButton;
+    ClassicHelpBtn: TButton;
+    ClassicCancelBtn: TButton;
+    ClassicOkBtn: TButton;
     procedure rbCollectClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure rbUseBinClick(Sender: TObject);
+    procedure CancelBtnClick(Sender: TObject);
+    procedure HelpBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -79,6 +87,23 @@ end;
 
 procedure TBinPropDlg.FormCreate(Sender: TObject);
 begin
+  Color := kleur1;
+  Tabpanel.Color := kleur2;
+  Label3.Font.Color := kleur3;
+  Label4.Font.Color := kleur3;
+  Height := 402;
+  If not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    HelpBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicHelpBtn.Visible := true;
+    ClassicOkBtn.Top := 344;
+    ClassicCancelBtn.Top := 344;
+    ClassicHelpBtn.Top := 344;
+   end;
   Notebook.PageIndex := 0;
   CapEdit.Text := BinCaption;
   if BinAction = baDelete then rbDelete.Checked := True
@@ -110,6 +135,7 @@ begin
   SaveBinProp;
   Bin.Configure;
   AnnounceSettingsChanged([scBin]);
+  Modalresult := mrOk;
 end;
 
 procedure TBinPropDlg.rbUseBinClick(Sender: TObject);
@@ -119,6 +145,18 @@ begin
   TrashPanel.Enabled := rbUseBin.Checked;
   TrashPanel.Font.Color := TextColors[rbUseBin.Checked];
 end;
+
+procedure TBinPropDlg.CancelBtnClick(Sender: TObject);
+begin
+ModalResult := mrCancel;
+end;
+
+procedure TBinPropDlg.HelpBtnClick(Sender: TObject);
+ begin
+  Application.HelpFile := 'CALMIRA.HLP';
+  Application.HelpContext(42);
+  ModalResult := mrNone;
+ end;
 
 end.
 

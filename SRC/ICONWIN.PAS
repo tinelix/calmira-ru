@@ -1,7 +1,9 @@
 {**************************************************************************}
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -591,7 +593,7 @@ var
   i: Integer;
 begin
   Dir.Columns := DefaultColumns; { 3.1 }
-  Color := Colors[ccWinFrame];
+  Color := kleur1;
   with Grid do
   begin
     Visible := False;
@@ -632,12 +634,17 @@ begin
     MinimumWidth := X;
     MinimumHeight := Y;
   end;
+
   { 3.1 -- Moved from Init }
   if ShowBrowserToolbar then ShowToolbar
   else HideToolbar;
+
   { 3.2 }
   if ShowBrowserStatusbar then ShowStatusbar
   else HideStatusbar;
+
+  
+
   { 3.11 }
   if BmpList <> nil then BmpList.Free;
   BmpList := TResBitmap.AlternateLoad('TREEBMPS', 'explrico.bmp');

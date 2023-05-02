@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,7 +29,7 @@ unit Incsrch;
 interface
 
 uses WinTypes, WinProcs, Classes, Graphics, Forms, Controls, Buttons,
-  StdCtrls;
+  StdCtrls, settings;
 
 type
   TSearchEvent = procedure (Sender: TObject; const s: string) of object;
@@ -38,6 +41,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure EditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     FOnSearch: TSearchEvent;
@@ -78,6 +82,11 @@ procedure TIncSearchDlg.EditKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if (Key = VK_RETURN) or (Key = VK_ESCAPE) then Close;
+end;
+
+procedure TIncSearchDlg.FormCreate(Sender: TObject);
+begin
+Color := kleur1;
 end;
 
 end.

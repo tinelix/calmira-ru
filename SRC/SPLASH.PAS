@@ -1,7 +1,9 @@
 {**************************************************************************}
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    version 3.33                                                          }
+{    Copyright (C) 2002-2003 Lionel Lowie                                  }
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Based on Calmira II Online! Release 3.3                               }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -39,11 +41,14 @@ uses
 type
   TSplashForm = class(TForm)
     Panel: TPanel;
+    Panel1: TPanel;
     AppLogo: TImage;
+    Image1: TImage;
     VersionLabel: TLabel;
-    Copy1Label: TLabel;
+    Label1: TLabel;
     Copy2Label: TLabel;
-    AppTitle: TImage;
+    Copy1Label: TLabel;
+    Label2: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
@@ -67,7 +72,6 @@ uses CompSys, Desk, ShutDown, Settings, MiscUtil, WinTypes, WinProcs;
 procedure TSplashForm.FormCreate(Sender: TObject);
 begin
   AppLogo.Picture.Bitmap.Handle := LoadBitmap(HInstance, 'LOGO');
-  AppTitle.Picture.Bitmap.Handle := LoadBitmap(HInstance, 'TITLE');
 end;
 
 procedure TSplashForm.FormCloseQuery(Sender: TObject;

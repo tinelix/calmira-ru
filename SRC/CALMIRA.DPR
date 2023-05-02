@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -84,7 +87,9 @@ uses
   Taskman in 'TASKMAN.PAS' {Task Manager},
   Password in 'PASSWORD.PAS' {Password Dialog},
   Logon in 'LOGON.PAS' {Logon Dialog},
-  GotoFld in 'GOTOFLD.PAS' {Goto Dialog};
+  GotoFld in 'GOTOFLD.PAS' {Goto Dialog},
+  XpProp in 'XPPROP.PAS' {Calmira XP Properties},
+  Changbmp in 'CHANGBMP.PAS' {Change User Picture};
 
 {$R *.RES}
 {$D Calmira II Online! Release}
@@ -142,7 +147,11 @@ begin { Calmira }
   LoadResources;
 
   { The Splash form is the main form (!!!) }
+  Application.Title := 'Calmira XP';
+  Application.HelpFile := 'C:\WINDOWS\CALMIRA\CALMIRA.HLP';
   Application.CreateForm(TSplashForm, SplashForm);
+  Application.CreateForm(TXpPropDlg, XpPropDlg);
+  Application.CreateForm(TChangeUserBmpDlg, ChangeUserBmpDlg);
   with SplashForm do
     if ShowSplash then
     begin

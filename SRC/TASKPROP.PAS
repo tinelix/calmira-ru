@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.32                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -27,7 +30,7 @@ interface
 
 uses WinTypes, WinProcs, Classes, Graphics, Forms, Controls, Buttons,
   StdCtrls, Chklist, TabNotBk, ExtCtrls, Spin, StylSped, TabPanel, Picbtn,
-  SortHdr, Slider;
+  SortHdr, Slider, Xpbutton;
 
 type
   TTaskPropDlg = class(TForm)
@@ -37,27 +40,30 @@ type
     Label1: TLabel;
     Header1: THeader;
     AppTrayList: TListBox;
-    AddAppBtn: TStyleSpeed;
-    RemoveBtn: TStyleSpeed;
     Label3: TLabel;
     Header2: THeader;
     ExcludeList: TListBox;
-    AddExclusionBtn: TStyleSpeed;
-    RemoveExcludeBtn: TStyleSpeed;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
-    HelpBtn: TPicBtn;
     Bevel4: TBevel;
     Label4: TLabel;
     Label9: TLabel;
     Label10: TLabel;
-    ModifyBtn: TStyleSpeed;
-    ModifyExclusionBtn: TStyleSpeed;
     Label11: TLabel;
     PixelsEdit: TSpinEdit;
     SlowDownEdit: TSpinEdit;
     Bevel1: TBevel;
     Bevel2: TBevel;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    HelpBtn: TXPButton;
+    AddAppBtn: TXPButton;
+    ModifyBtn: TXPButton;
+    RemoveBtn: TXPButton;
+    AddExclusionBtn: TXPButton;
+    ModifyExclusionBtn: TXPButton;
+    RemoveExcludeBtn: TXPButton;
+    ClassicHelpBtn: TButton;
+    ClassicCancelBtn: TButton;
+    ClassicOkBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure AppTrayListDrawItem(Control: TWinControl; Index: Integer;
@@ -78,7 +84,9 @@ type
     procedure ModifyExclusionBtnClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-  private
+    procedure CancelBtnClick(Sender: TObject);
+    procedure HelpBtnClick(Sender: TObject);
+    private
     { Private declarations }
   public
     { Public declarations }
@@ -97,6 +105,21 @@ uses Settings, Strings, Dialogs, SysUtils, Locale, MiscUtil;
 
 procedure TTaskPropDlg.FormCreate(Sender: TObject);
 begin
+  Color := kleur1;
+  Tabpanel.Color := kleur2; 
+  Height := 402;
+  If not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    HelpBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicHelpBtn.Visible := true;
+    ClassicOkBtn.Top := 344;
+    ClassicCancelBtn.Top := 344;
+    ClassicHelpBtn.Top := 344;
+   end;
   CheckList.Color := Colors[ccChecklist];
   Notebook.PageIndex := 0;
   CheckList.SetData([DisableTaskbar, StayVisible, ShrinkMax, Clock24, PopupRes, PopupDate,
@@ -131,6 +154,7 @@ begin
   ini.WriteSectionValues('Applet Tray', AppTrayList.Items);
   ini.WriteStrings('Exclude', ExcludeList.Items);
   AnnounceSettingsChanged([scTaskbar]);
+  ModalResult := mrOk;
 end;
 
 procedure TTaskPropDlg.AppTrayListDrawItem(Control: TWinControl;
@@ -246,6 +270,20 @@ begin
   if (Key = VK_TAB) and (ssCtrl in Shift) then
     TabPanel.SelectNext(not (ssShift in Shift));
 end;
+
+
+
+procedure TTaskPropDlg.CancelBtnClick(Sender: TObject);
+begin
+ModalResult := MrCancel;
+end;
+
+procedure TTaskPropDlg.HelpBtnClick(Sender: TObject);
+ begin
+  Application.HelpFile := 'CALMIRA.HLP';
+  Application.HelpContext(53);
+  ModalResult := mrNone;
+ end;
 
 end.
 

@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.32                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,7 +29,8 @@ unit Replace;
 interface
 
 uses
-  Classes, SysUtils, Controls, Forms, StdCtrls, Buttons, ExtCtrls, Picbtn;
+  Classes, SysUtils, Controls, Forms, StdCtrls, Buttons, ExtCtrls, Picbtn,
+  Xpbutton,settings;
 
 type
   TReplaceBox = class(TForm)
@@ -37,13 +41,21 @@ type
     Source1: TLabel;
     Source2: TLabel;
     Image1: TImage;
-    YesBtn: TPicBtn;
-    NoBtn: TPicBtn;
-    AllBtn: TPicBtn;
-    CancelBtn: TPicBtn;
     Label1: TLabel;
+    YesBtn: TXPButton;
+    NoBtn: TXPButton;
+    Cancelbtn: TXPButton;
+    AllBtn: TXPButton;
+    ClassicYesBtn: TButton;
+    ClassicNoBtn: TButton;
+    ClassicCancelBtn: TButton;
+    ClassicAllBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure YesBtnClick(Sender: TObject);
+    procedure NoBtnClick(Sender: TObject);
+    procedure CancelbtnClick(Sender: TObject);
+    procedure AllBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -86,12 +98,49 @@ end;
 
 procedure TReplaceBox.FormCreate(Sender: TObject);
 begin
+  Color := kleur1;
+  Height := 202;
+  if not ButtonStyle then
+   begin
+    YesBtn.Visible := false;
+    NoBtn.Visible := false;
+    CancelBtn.Visible := false;
+    AllBtn.Visible := false;
+    ClassicYesBtn.Visible := true;
+    ClassicNoBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicAllBtn.Visible := true;
+    ClassicYesBtn.Top := 144;
+    ClassicNoBtn.Top := 144;
+    ClassicCancelBtn.Top := 144;
+    ClassicAllBtn.Top := 144;
+   end;
   Image1.Picture.Icon.Handle := LoadIcon(0, IDI_QUESTION);
 end;
 
 procedure TReplaceBox.FormShow(Sender: TObject);
 begin
   if MsgDialogSounds then MessageBeep(MB_ICONQUESTION);
+end;
+
+procedure TReplaceBox.YesBtnClick(Sender: TObject);
+begin
+ModalResult := mrYes;
+end;
+
+procedure TReplaceBox.NoBtnClick(Sender: TObject);
+begin
+ModalResult := MrNo;
+end;
+
+procedure TReplaceBox.CancelbtnClick(Sender: TObject);
+begin
+ModalResult := mrCancel;
+end;
+
+procedure TReplaceBox.AllBtnClick(Sender: TObject);
+begin
+ModalResult := 8;
 end;
 
 end.

@@ -27,16 +27,13 @@ interface
 
 uses SysUtils, WinTypes, WinProcs, Messages, Classes, Graphics, Controls,
   Forms, ExtForm, Dialogs, Buttons, StylSped, StdCtrls, Grids, Multigrd,
-  Sysmenu, Menus, ExtCtrls, TabPanel, PicBtn, SortHdr;
+  Sysmenu, Menus, ExtCtrls, TabPanel, PicBtn, SortHdr, Xpbutton;
 
 type
   TTaskManager = class(TExtForm)
     TabPanel: TTabPanel;
     Notebook: TNotebook;
-    SwitchToBtn: TStyleSpeed;
-    EndTaskBtn: TStyleSpeed;
     Header: THeader;
-    NewTaskBtn: TStyleSpeed;
     TaskLabel: TLabel;
     MemLabel: TLabel;
     TaskMenu: TPopupMenu;
@@ -56,6 +53,9 @@ type
     Timer: TTimer;
     Grid: TMultiGrid;
     Bevel: TBevel;
+    EndtaskBtn: TXPButton;
+    SwitchToBtn: TXPButton;
+    NewTaskBtn: TXPButton;
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -86,7 +86,10 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormHide(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
-  private
+    procedure EndtaskBtnClick(Sender: TObject);
+    procedure SwitchToBtnClick(Sender: TObject);
+    procedure NewTaskBtnClick(Sender: TObject);
+ private
     { Private declarations }
     LastActiveWindow: HWnd;
     WindowList: TList;
@@ -189,6 +192,8 @@ end;
 
 procedure TTaskManager.FormCreate(Sender: TObject);
 begin
+  Color := kleur1;
+  Tabpanel.Color := kleur2;
   DeleteMenu(GetSystemMenu(Handle, False), SC_SIZE, MF_BYCOMMAND);
   WindowList := TList.Create;
   TaskList := TStringList.Create;
@@ -506,6 +511,46 @@ begin
   Timer.Enabled := False;
   TaskManager.Configure;
 end;
+
+
+
+procedure TTaskManager.EndtaskBtnClick(Sender: TObject);
+ begin
+ if SelectedWnd <> 0 then
+  begin
+    if SelectedWnd = Application.Handle then
+    begin
+      Close;
+      Application.Terminate;
+    end
+    else
+    begin
+      PostMessage(SelectedWnd, WM_CLOSE, 0, 0);
+      Timer.Enabled := True;
+    end;
+  end;
+end;
+
+procedure TTaskManager.SwitchToBtnClick(Sender: TObject);
+ var
+  Wnd: HWnd;
+ begin
+  Wnd := SelectedWnd;
+  if Wnd = 0 then Exit;
+  if not IsWindowEnabled(Wnd) then
+   begin
+    MessageBeep(MB_ICONHAND);
+    Exit;
+   end;
+  SendMessage(Wnd, WM_ACTIVATE, WA_ACTIVE, MakeLong(Wnd, Word(True)));
+  if IsIconic(Wnd) then ShowWindow(Wnd, SW_RESTORE)
+  else BringWindowToTop(Wnd);
+ end;
+
+procedure TTaskManager.NewTaskBtnClick(Sender: TObject);
+ begin
+  RunExecute('', '');
+ end;
 
 end.
 

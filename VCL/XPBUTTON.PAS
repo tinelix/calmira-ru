@@ -1,0 +1,210 @@
+{*********************************************************}
+{                                                         }
+{    Calmira XP System library                            }
+{    by Lionel Lowie                                      }
+{    Added in Version XP 3.32                             }
+{                                                         }
+{*********************************************************}
+
+unit Xpbutton;
+
+interface
+
+uses
+  SysUtils, WinTypes, WinProcs, Messages, Classes, Graphics, Controls,
+  Forms, Dialogs;
+
+type
+  TXPButton = class(TCustomControl)
+  private
+   DetectieMuisOver: Boolean;
+   OnMDown: TMouseEvent;
+   OnMUp: TMouseEvent;
+   FCaption: string;
+   FEnabled: Boolean;
+   teksthoogte: longint;
+   tekstbreedte: longint;
+   knophoogte: longint;
+   knopbreedte: longint;
+   procedure SetCaption(Value: string);
+   procedure SetEnabled(Value: Boolean);
+
+  protected
+   procedure Paint; override;
+   procedure TekenDisabled;
+   procedure TekenCaption;
+   procedure TekenMuisOver;
+   procedure TekenMuisDown;
+   procedure TekenFocused;
+   procedure CMMouseEnter(var Message: TMessage); message CM_MOUSEENTER;
+   procedure CMMouseLeave(var Message: TMessage); message CM_MOUSELEAVE;
+   procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+
+  public
+   Constructor Create; 
+   Destructor Destroy;
+
+  published
+   property Caption: string read FCaption write SetCaption;
+   property Enabled: boolean read FEnabled write SetEnabled;
+   property Font;
+   property Visible;
+   property OnClick;
+   property OnDblClick;
+   property OnMouseDown: TMouseEvent read OnMDown write OnMDown;
+
+  end;
+
+procedure Register;
+
+implementation
+
+procedure Register;
+begin
+  RegisterComponents('Calmira', [TXPButton]);
+end;
+
+
+constructor TXPButton.Create;
+ begin
+  enabled := true;
+  width := 83;
+  height := 25;
+ end;
+
+destructor TXPButton.Destroy;
+ begin
+  canvas.free;
+ end;
+
+procedure TXPButton.Paint;
+ begin
+  inherited Paint;
+  with Canvas do
+   begin
+    if Enabled then
+     begin
+      pen.color := $02743C00;
+      pen.width := 1;
+      brush.color := $02EFF3F3;
+      roundrect(1,1,width-2,height-2,7,7);
+      pen.color := $02EFF3F3;
+      TekenCaption;
+      if DetectieMuisOver then TekenMuisOver;
+     end
+    else
+     TekenDisabled;
+   end;
+ end;
+
+procedure TXPButton.TekenDisabled;
+ begin
+  with Canvas do
+   begin
+    pen.color := $02BAC7C9;
+    pen.width := 2;
+    brush.color := $02F3F4F5;
+    roundrect(3,3,width+1,height+1,7,7);
+    pen.color := $02BAC7C9;
+    TekenCaption;
+   end;
+ end;
+
+procedure TXPButton.TekenCaption;
+ begin
+  with Canvas do
+   begin
+    Font.Name :='Tahoma';
+    Font.Size :=8;
+    teksthoogte := textheight(caption) div 2;
+    tekstbreedte := textwidth(caption) div 2;
+    knophoogte := height div 2;
+    knopbreedte :=width div 2;
+     if enabled then
+      Font.Color := clBlack
+      else
+      Font.Color := $02BAC7C9;
+    textout(knopbreedte-tekstbreedte,knophoogte-teksthoogte, Caption);
+   end;
+ end;
+
+procedure TXPButton.TekenMuisOver;
+ begin
+  with Canvas do
+   begin
+    if DetectieMuisOver and Enabled then
+     begin
+      brush.style := bsClear;
+      pen.color :=$023CC7FF;
+      pen.width := 1;
+      roundrect(2,2,width-3,height-3,7,7);
+     end;
+   end;
+ end;
+
+procedure TXPButton.TekenMuisDown;
+ begin
+  with Canvas do
+   begin
+    if Enabled then
+     begin
+      pen.color := $02743C00;
+      pen.width := 2;
+      brush.color := $02D9E1E2;
+      roundrect(1,1,width-2,height-2,7,7);
+      pen.color := $02EFF3F3;
+      TekenCaption;
+     end;
+   end;
+ end;
+
+procedure TXPButton.TekenFocused;
+ begin
+  with Canvas do
+   begin
+    if Enabled and Focused then
+     begin
+      brush.style := bsClear;
+      pen.color :=clBlue;
+      pen.width := 2;
+      roundrect(2,2,width-3,height-3,7,7);
+     end;
+   end;
+ end;
+
+procedure TXPButton.CMMouseEnter(var Message: TMessage);
+ begin
+  inherited;
+   DetectieMuisOver := True;
+   Invalidate;
+ end;
+
+procedure TXPButton.CMMouseLeave(var Message: TMessage);
+ begin
+  inherited;
+   DetectieMuisOver := False;
+   Invalidate;
+ end;
+
+procedure TXPButton.MouseDown(Button: TMouseButton; Shift: TShiftState;X, Y: Integer);
+ begin
+  TekenMuisDown;
+ end;
+
+procedure TXPButton.SetCaption(Value: string);
+ begin
+  if (FCaption <> Value) then begin
+    FCaption := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TXPButton.SetEnabled(Value: boolean);
+ begin
+  if (FEnabled <> Value) then begin
+    FEnabled := Value;
+    Invalidate;
+  end;
+end;
+
+end.

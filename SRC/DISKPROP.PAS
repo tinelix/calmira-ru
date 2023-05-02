@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -27,7 +30,7 @@ interface
 
 uses
   Classes, SysUtils, Graphics, Controls, Forms, StdCtrls, Buttons, ExtCtrls,
-  TabNotBk, LabelSel, TabPanel, Picbtn, Drives, Win95pie, SortHdr;
+  TabNotBk, LabelSel, TabPanel, Picbtn, Drives, Win95pie, SortHdr, Xpbutton;
 
 type
   TDiskDialog = class(TForm)
@@ -45,15 +48,18 @@ type
     Label13: TLabel;
     Label14: TLabel;
     DriveUsed: TLabel;
-    OKBtn: TPicBtn;
     VolLabel: TEdit;
     Bevel1: TBevel;
-    CancelBtn: TPicBtn;
-    HelpBtn: TPicBtn;
     Bevel2: TBevel;
     PieChart: TWin95PieChart;
     Panel1: TPanel;
     Panel2: TPanel;
+    OkBtn: TXPButton;
+    Cancelbtn: TXPButton;
+    HelpBtn: TXPButton;
+    ClassicHelpBtn: TButton;
+    ClassicCancelBtn: TButton;
+    ClassicOkBtn: TButton;
     procedure FormShow(Sender: TObject);
     procedure DriveImageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -67,6 +73,8 @@ type
       Shift: TShiftState);
     { 3.1 }
     procedure OKBtnClick(Sender: TObject);
+    procedure CancelbtnClick(Sender: TObject);
+    procedure HelpBtnClick(Sender: TObject);
   private
     { Private declarations }
     VolChanged: Boolean;
@@ -143,6 +151,21 @@ end;
 
 procedure TDiskDialog.FormCreate(Sender: TObject);
 begin
+  Color := kleur1;
+  TabPanel.Color := kleur2;
+  Height := 402;
+  If not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    HelpBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicHelpBtn.Visible := true;
+    ClassicOkBtn.Top := 344;
+    ClassicCancelBtn.Top := 344;
+    ClassicHelpBtn.Top := 344;
+   end;
   Notebook.PageIndex := 0;
   VolChanged := False;
 end;
@@ -176,7 +199,8 @@ end;
 
 procedure TDiskDialog.OKBtnClick(Sender: TObject);
 begin
-  if VolChanged then SetLabel;
+ if VolChanged then SetLabel;
+ ModalResult := mrOk;
 end;
 
 procedure TDiskDialog.DetectLabel;
@@ -210,6 +234,18 @@ begin
     Free;
   end;
 end;
+
+procedure TDiskDialog.CancelbtnClick(Sender: TObject);
+begin
+Modalresult := mrCancel
+end;
+
+procedure TDiskDialog.HelpBtnClick(Sender: TObject);
+ begin
+  Application.HelpFile := 'CALMIRA.HLP';
+  Application.HelpContext(45);
+  ModalResult := mrNone;
+ end;
 
 end.
 

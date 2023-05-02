@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.32                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,7 +29,7 @@ unit Select;
 interface
 
 uses WinTypes, WinProcs, Classes, Graphics, Forms, Controls, Buttons,
-  StdCtrls, ExtCtrls, StylSped, Picbtn;
+  StdCtrls, ExtCtrls, StylSped, Picbtn, Settings, Xpbutton;
 
 type
   TSelectFileEvent = procedure(Sender: TObject; const FileSpec: string;
@@ -37,12 +40,15 @@ type
     Edit: TEdit;
     Label1: TLabel;
     Label2: TLabel;
-    SelectBtn: TPicBtn;
-    DeselectBtn: TPicBtn;
-    CloseBtn: TPicBtn;
+    ClassicSelectBtn: TPicBtn;
+    ClassicDeselectBtn: TPicBtn;
+    ClassicCloseBtn: TPicBtn;
+    SelectBtn: TXPButton;
+    DeselectBtn: TXPButton;
+    CloseBtn: TXPButton;
     procedure FormCreate(Sender: TObject);
-    procedure SelectBtnClick(Sender: TObject);
-    procedure CloseBtnClick(Sender: TObject);
+    procedure ClassicSelectBtnClick(Sender: TObject);
+    procedure ClassicCloseBtnClick(Sender: TObject);
   private
     { Private declarations }
     FSelectFiles: TSelectFileEvent;
@@ -62,10 +68,25 @@ uses Strings, Resource;
 
 procedure TSelectFileDlg.FormCreate(Sender: TObject);
 begin
+  height := 178;
+  color := kleur1;
   Image.Picture.Icon.Assign(Icons.Get('MultiFile'));
+  if not Buttonstyle then
+   begin
+    SelectBtn.Visible := false;
+    DeselectBtn.Visible := false;
+    CloseBtn.Visible := false;
+    ClassicSelectBtn.Visible := true;
+    ClassicDeselectBtn.Visible := true;
+    ClassicCloseBtn.Visible := true;
+    ClassicSelectBtn.Top := 116;
+    ClassicDeselectBtn.Top := 116;
+    ClassicCloseBtn.Top := 116;
+   end;
+
 end;
 
-procedure TSelectFileDlg.SelectBtnClick(Sender: TObject);
+procedure TSelectFileDlg.ClassicSelectBtnClick(Sender: TObject);
 var
   s: string;
 begin
@@ -78,9 +99,10 @@ begin
   end;
 end;
 
-procedure TSelectFileDlg.CloseBtnClick(Sender: TObject);
+procedure TSelectFileDlg.ClassicCloseBtnClick(Sender: TObject);
 begin
   Close;
+  ModalResult := MrCancel;
 end;
 
 end.

@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.32                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -26,7 +29,7 @@ unit Runprog;
 interface
 
 uses Classes, Forms, Controls, Buttons, StdCtrls, Dialogs, Settings,
-  ExtCtrls, SysUtils, Picbtn, SysMenu;
+  ExtCtrls, SysUtils, Picbtn, SysMenu, Xpbutton;
 
 type
   TRunDlg = class(TForm)
@@ -34,18 +37,21 @@ type
     Combo: TComboBox;
     OpenDialog: TOpenDialog;
     Image: TImage;
-    BrowseBtn: TPicBtn;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
+    ClassicBrowseBtn: TPicBtn;
+    ClassicOKBtn: TPicBtn;
+    ClassicCancelBtn: TPicBtn;
     Label2: TLabel;
     DosCommand: TCheckBox;
     DosSession: TCheckBox;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    BrowseBtn: TXPButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure OKBtnClick(Sender: TObject);
-    procedure CancelBtnClick(Sender: TObject);
-    procedure BrowseBtnClick(Sender: TObject);
+    procedure ClassicOKBtnClick(Sender: TObject);
+    procedure ClassicCancelBtnClick(Sender: TObject);
+    procedure ClassicBrowseBtnClick(Sender: TObject);
     procedure DosSessionClick(Sender: TObject);
   private
     { Private declarations }
@@ -82,8 +88,23 @@ end;
 
 procedure TRunDlg.FormCreate(Sender: TObject);
 begin
+  Height := 180;
+  Color := kleur1;
   Image.Picture.Icon.Assign(Icons.Get('RunDialog'));
   ini.ReadStrings('RunProgram', Combo.Items);
+  if not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    BrowseBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicBrowseBtn.Visible := true;
+    ClassicOkBtn.Top := 116;
+    ClassicCancelBtn.Top := 116;
+    ClassicBrowseBtn.Top := 116;
+   end;
+
 end;
 
 procedure TRunDlg.FormDestroy(Sender: TObject);
@@ -97,7 +118,7 @@ begin
   Action := caFree;
 end;
 
-procedure TRunDlg.OKBtnClick(Sender: TObject);
+procedure TRunDlg.ClassicOKBtnClick(Sender: TObject);
 var
   filename, newdir: TFilename;
   params: string;
@@ -143,14 +164,16 @@ begin
       else if (DefaultExec(filename, params, newdir, SW_SHOWNORMAL) > 32) and
         RunAutoClose then Close;
     end;
+ modalresult := mrOk;
 end;
 
-procedure TRunDlg.CancelBtnClick(Sender: TObject);
+procedure TRunDlg.ClassicCancelBtnClick(Sender: TObject);
 begin
   Close;
+  ModalResult := mrCancel;
 end;
 
-procedure TRunDlg.BrowseBtnClick(Sender: TObject);
+procedure TRunDlg.ClassicBrowseBtnClick(Sender: TObject);
 begin
   if OpenDialog.Execute then
     Combo.Text := Lowercase(OpenDialog.Filename);

@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.32                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -36,7 +39,7 @@ interface
 uses WinTypes, WinProcs, Classes, Graphics, Forms, Controls, Buttons,
   StdCtrls, Menus, Grids, Outline, TabNotBk, SysUtils, Chklist, StylSped,
   Scrtree, Messages, CalForm, ExtForm, Settings, ExtCtrls, TabPanel, Picbtn,
-  Spin, DdeMan;
+  Spin, DdeMan, Xpbutton;
 
 type
   TStartPropDlg = class(TCalForm)
@@ -65,9 +68,6 @@ type
     NewStyles: TCheckList;
     PrefList: TCheckList;
     Label2: TLabel;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
-    HelpBtn: TPicBtn;
     Label3: TLabel;
     LrgItmHeight: TSpinEdit;
     Label4: TLabel;
@@ -77,7 +77,13 @@ type
     Export: TMenuItem;
     N3: TMenuItem;
     ExpandBranch: TMenuItem;
-    Progman: TDdeClientConv; { 3.0 }
+    Progman: TDdeClientConv;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    HelpBtn: TXPButton;
+    ClassicHelpBtn: TButton;
+    ClassicCancelBtn: TButton;
+    ClassicOkBtn: TButton; { 3.0 }
     procedure OutlineDragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure OutlineDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -113,6 +119,7 @@ type
     procedure OutlineMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure FormPaint(Sender: TObject);
+    procedure HelpBtnClick(Sender: TObject);
     {procedure ModifiedMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);} { 2.2 }
   private
@@ -436,6 +443,23 @@ procedure TStartPropDlg.FormCreate(Sender: TObject);
 var
   i: Integer;
 begin
+  Color := kleur1;
+  TabPanel.Color := kleur2;
+  NoteBook.Color := kleur2;
+  Label1.Font.Color := kleur3;
+  Height := 402;
+  If not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    HelpBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicHelpBtn.Visible := true;
+    ClassicOkBtn.Top := 380;
+    ClassicCancelBtn.Top := 380;
+    ClassicHelpBtn.Top := 380;
+   end;
   { A menu editor dialog is created here to speed up editing }
   PrefList.Color := Colors[ccChecklist];
   Notebook.PageIndex := 0;
@@ -537,6 +561,7 @@ begin
   end;
   Close;
   AnnounceSettingsChanged([scStartMenu]);
+  ModalResult := mrOk;
 end;
 
 procedure TStartPropDlg.OutlineDrawItem(Control: TWinControl;
@@ -616,6 +641,7 @@ end;
 procedure TStartPropDlg.CancelBtnClick(Sender: TObject);
 begin
   Close;
+  ModalResult:=mrCancel;
 end;
 
 procedure TStartPropDlg.SettingsChanged(Changes: TSettingChanges);
@@ -915,6 +941,13 @@ begin
   NewStartItems.Free;
   ShellDDEBuf.Free;
 end;
+
+procedure TStartPropDlg.HelpBtnClick(Sender: TObject);
+ begin
+  Application.HelpFile := 'CALMIRA.HLP';
+  Application.HelpContext(50);
+  ModalResult := mrNone;
+ end;
 
 initialization
   NewStartItems := TStringList.Create;

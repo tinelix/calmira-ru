@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.33                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -27,7 +30,7 @@ interface
 
 uses WinTypes, WinProcs, Classes, Graphics, Forms, Controls, Buttons,
   StdCtrls, ExtCtrls, Chklist, TabNotBk, Dialogs, Settings, TabPanel,
-  Picbtn, Slider, Spin;
+  Picbtn, Slider, Spin, Xpbutton;
 
 type
   TFileSysPropDlg = class(TForm)
@@ -61,9 +64,6 @@ type
     UndelEdit: TEdit;
     Label16: TLabel;
     DiskEdit: TEdit;
-    OKBtn: TPicBtn;
-    CancelBtn: TPicBtn;
-    HelpBtn: TPicBtn;
     slDelay: TSlider;
     Bevel1: TBevel;
     Label6: TLabel;
@@ -87,6 +87,12 @@ type
     Label22: TLabel;
     Bevel7: TBevel;
     cbFileSysChange: TCheckBox;
+    OkBtn: TXPButton;
+    CancelBtn: TXPButton;
+    HelpBtn: TXPButton;
+    ClassicHelpBtn: TButton;
+    ClassicCancelBtn: TButton;
+    ClassicOkBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure cb4DOSDescClick(Sender: TObject);
@@ -94,6 +100,8 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cbFileSysChangeClick(Sender: TObject);
+    procedure CancelBtnClick(Sender: TObject);
+    procedure HelpBtnClick(Sender: TObject);
   private
     { Private declarations }
     Changes: TSettingChanges;
@@ -116,6 +124,25 @@ procedure TFileSysPropDlg.FormCreate(Sender: TObject);
 const
   FontColors: array[Boolean] of TColor = (clGray, clBlack);
 begin
+  color := kleur1;
+  TabPanel.Color := kleur2;
+  Label5.Font.Color := kleur3;
+  Label12.Font.Color := kleur3;
+  Label17.Font.Color := kleur3;
+  Label6.Font.Color := kleur3;
+  Height := 402;
+  If not Buttonstyle then
+   begin
+    OkBtn.Visible := false;
+    CancelBtn.Visible := false;
+    HelpBtn.Visible := false;
+    ClassicOkBtn.Visible := true;
+    ClassicCancelBtn.Visible := true;
+    ClassicHelpBtn.Visible := true;
+    ClassicOkBtn.Top := 344;
+    ClassicCancelBtn.Top := 344;
+    ClassicHelpBtn.Top := 344;
+   end;
   Changes := [scFileSystem];
   ConfirmList.Color := Colors[ccChecklist];
   MiscList.Color := Colors[ccChecklist];
@@ -205,6 +232,7 @@ begin
   EnableLFN := cbEnableLFN.Checked;
   SaveFileSysProp;
   AnnounceSettingsChanged(Changes);
+  ModalResult := mrOk;
 end;
 
 procedure TFileSysPropDlg.cb4DOSDescClick(Sender: TObject);
@@ -236,6 +264,18 @@ procedure TFileSysPropDlg.cbFileSysChangeClick(Sender: TObject);
 begin
   if Showing then Include(Changes, scSystem);
 end;
+
+procedure TFileSysPropDlg.CancelBtnClick(Sender: TObject);
+begin
+ModalResult :=mrCancel
+end;
+
+procedure TFileSysPropDlg.HelpBtnClick(Sender: TObject);
+ begin
+  Application.HelpFile := 'CALMIRA.HLP';
+  Application.HelpContext(47);
+  ModalResult := mrNone;
+ end;
 
 end.
 

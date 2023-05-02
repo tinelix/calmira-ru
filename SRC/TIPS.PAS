@@ -1,7 +1,10 @@
 {**************************************************************************}
 {                                                                          }
-{    Calmira II shell for Microsoft® Windows(TM) 3.1                       }
-{    Online! Release 3.3                                                  }
+{    Calmira XP shell for Microsoft® Windows(TM) 3.1                       }
+{    Version 3.32                                                          }
+{    Copyright (C) Lionel Lowie                                            }
+{                                                                          }
+{    Based on Calmira Online! Release 3.3                                  }
 {    Copyright (C) 1998-2002 Calmira Online!                               }
 {    Copyright (C) 1997-1998 Li-Hsin Huang                                 }
 {                                                                          }
@@ -42,7 +45,6 @@ type
     TipLabel: TLabel;
     Bevel1: TBevel;
     Image1: TImage;
-    Title: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure NextTipClick(Sender: TObject);
@@ -95,8 +97,7 @@ end;
 
 procedure TTipDialog.FormCreate(Sender: TObject);
 begin
-  with Title.Picture do
-    ReplaceBitmapColors(Bitmap, Bitmap.Canvas.Pixels[0, Height - 1], Color);
+  Color := kleur1;
   cbShowDailyTips.Checked := ShowDailyTips;
   CloseBtn.Cancel := True;
 end;
