@@ -205,7 +205,7 @@ begin
     else
     begin
       s := Icons.GetType(FileExt);
-      if s = '' then s := UpperCase(FileExt) + ' File';
+      if s = '' then s := 'Τΰιλ ' + UpperCase(FileExt);
     end;
     TypeLab.Caption := s;
     ExtractVerInfo;

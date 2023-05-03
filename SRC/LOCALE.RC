@@ -2,9 +2,9 @@
 
 STRINGTABLE
 {
-  SCannotFindLicense, "LICENSE.TXT not found.  You can obtain "
-    "a GNU General Public License by writing to the Free Software "
-    "Foundation Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
+  SCannotFindLicense, "LICENSE.TXT не найден. Вы можете получить копию "
+    "GNU General Public License, отправив запрос Фонду свободного "
+    "программного обеспечения по адресу: 675 Mass Ave, Cambridge, MA 02139, USA.";
   SCannotRunNotepad, "Не удалось открыть Блокнот. Прочитайте LICENSE.TXT "
     "в другом текстовом редакторе.";
   SWelcome, "Добро пожаловать";
@@ -58,7 +58,7 @@ STRINGTABLE
   SCannotRename, "Невозможно переименовать %s to %s.";
   SChangeDescription, "Изменить описание";
   SDescribe, "Описать \"%s\":";
-  SCannotOpenFileWith, "Невозможно открыть файла %s с помощью программы %s";
+  SCannotOpenFileWith, "Невозможно открыть файл %s с помощью программы %s";
   SCannotPutFolderOnSelf, "Вы не можете копировать или переместить папку в саму себя.";
   SCannotPutFolderInSelf, "Вы не можете копировать или переместить папку в один из"
     "этих подкаталогов.";
@@ -76,12 +76,12 @@ STRINGTABLE
   SCannotCyclicMove, "Вы не можете переместить папку в себя или одну из подпапок.";
   SCannotDeleteFile, "Невозможно удалить %s.";
   SNoFilesFound, "Файлы не найдены.";
-  SCannotRunDefViewer, "Не удалось запустить просмотрщика по умолчанию. ";
+  SCannotRunDefViewer, "Не удалось запустить просмотрщик по умолчанию. ";
     "Укажите просмотрщик файла по умолчанию в \"Свойствах файловой системы\"."
   SFileNotAssociated, "Этот файл не ассоциирован с программой. "
     "Сначала ассоциируйте или выберите просмотрщика файла по умолчанию.";
   SCannotRunOrView, "Не удалось запустить программу или просмотреть файл %s.";
-  SConfirmNewFolder, "%s не существует.  Создать новую папку?";
+  SConfirmNewFolder, "%s не существует.  Создать папку?";
 
   SNetSuccess, "Подключение/отсоединение произошло успешно";
   SNetNotSupported, "Эта операция не поддерживается";
@@ -92,7 +92,7 @@ STRINGTABLE
   SBadLocalName, "Неверное локальное устройство";
   SInvalidPassword, "Пользователь неизвестен или неверный пароль";
   SAccessDenied, "Доступ запрещен";
-  SFilesWereOpen, "The connection was not cancelled because there are files open";
+  SFilesWereOpen, "Подключение не может быть отменено, так как файлы на данный момент открыты.";
   SAlreadyConnected, "Это устройство уже подключено удаленно";
   SNetOperationFailed, "Ошибка подключения/отсоединения";
   SQueryCloseOpenFiles, "Вы действительно хотите закрыть любые открытые файлы или работу принтера?";
@@ -172,16 +172,16 @@ STRINGTABLE
   SCompany, "Компания";
   SLegalTrademarks, "Товарные знаки";
   SInternalName, "Внутреннее имя";
-  SPrivateBuild, "Закрытая сборка";
+  SPrivateBuild, "Частная сборка";
   SSpecialBuild, "Специальная сборка";
-  SOriginalFilename, "Оригинальное имя файла";
+  SOriginalFilename, "Имя оригинального файла";
   SWOWVersion, "Версия WOW";
 
   SQueryTerminate, "WARNING: Terminating a program may cause undesired results "
     "including loss of resources and system instability. The program will not "
     "be able to save it's data. Are you sure you want to terminate \"%s\"?"
 
-  SCreateNewUser, "Создать нового польз.";
+  SCreateNewUser, "Создать пользователя";
   SUserName, "Имя пользователя:";
   SEnterPassword, "Введите пароль:";
   SConfirmPassword, "Подтвердите пароль:";
@@ -220,7 +220,7 @@ STRINGTABLE
   SMWinCreateFolder, "Создать &папку...";
   SMWinCreateAlias, "Создать пс&евдоним...";
 
-  SCorruptEXE, "Системе недостаточно памяти, или EXE-файл поврежден.";
+  SCorruptEXE, "Системе недостаточно памяти или EXE-файл поврежден.";
   SFileNotFound, "%s не найден. Убедитесь, что путь корректен и "
     "файл существует.";
   SSharingError, "Нарушение совместного доступа или ошибка доступа к сети.";

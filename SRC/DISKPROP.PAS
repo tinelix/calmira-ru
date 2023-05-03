@@ -97,7 +97,7 @@ var
   size, free: Longint;
 begin
   { 2.2 }
-  DriveLetter.Caption := 'Drive ' + Drive + ':';
+  DriveLetter.Caption := 'Диск' + Drive + ':';
   dnum := DriveNumber(Drive);
   DriveType := GuessDriveType(Drive);
   DriveTypeLabel.Caption := DriveDesc[DriveType];
@@ -124,7 +124,7 @@ begin
     PieChart.Maximum := size;
     PieChart.Value := size - free;
     DriveUsed.Caption := DriveUsed.Caption +
-      '  (' + Format('%d%%', [PieChart.GetPercent]) + ')';
+      ' (' + Format('%d%%', [PieChart.GetPercent]) + ')';
   end;
   { 3.0 / 3.1 }
   if not (dfWriteable in GetDriveFlags(Drive)) or (DriveType = dtNetwork) then

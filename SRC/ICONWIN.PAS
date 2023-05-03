@@ -767,7 +767,7 @@ begin
       else Inc(size.x, (15 * BrowseGrid.X) div 10);
   end
   else if DisplayMode = dmSmallIcons then
-    size.x := (24 + NameColWidth) * Max(2, cells.x - 2) + XSpare;
+    size.x := (24 + NameColWidth) * Max(4, cells.x - 2) + XSpare;
   { The OnResize event is only triggered when the bounds change, but
     as a convention, AutoResize needs to call Resize exactly once
     to reset some of the controls }
@@ -2378,7 +2378,7 @@ begin
     folder[1] := Upcase(folder[1]); { 3.1 }
     Caption := folder;
   end;
-  if Owner = Explorer then Caption := 'Exploring ' + Caption; { 3.1 }
+  if Owner = Explorer then Caption := Caption; { 3.1 }
 end;
 
 procedure TIconWindow.SearchFileHandler(Sender: TObject; const s: string);

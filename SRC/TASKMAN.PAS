@@ -247,7 +247,7 @@ begin
   end;
   TaskLabel.Caption := Format(SSNumTasks, [TaskList.Count,
     OneItem[TaskList.Count = 1]]);
-  MemLabel.Caption := FormatByte(GetFreeSpace(0), 2, 2) + ' free';
+  MemLabel.Caption := FormatByte(GetFreeSpace(0), 2, 2) + ' свободно';
 end;
 
 function TTaskManager.SelectedWnd: HWnd;

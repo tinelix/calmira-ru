@@ -113,6 +113,7 @@ type
     procedure OutlineMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure FormPaint(Sender: TObject);
+    procedure PrefListClick(Sender: TObject);
     {procedure ModifiedMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);} { 2.2 }
   private
@@ -451,10 +452,6 @@ begin
   begin
     SetUpdateState(False);
     Canvas.Pen.Color := clGray;
-    try
-       Items[1].Expand; { 3.11 }
-    except
-       end;
   end;
   Configure;
   if StartMenu3D then Win95Menu.Checked := True
@@ -917,6 +914,11 @@ procedure DoneStartProp; far;
 begin
   NewStartItems.Free;
   ShellDDEBuf.Free;
+end;
+
+procedure TStartPropDlg.PrefListClick(Sender: TObject);
+begin
+
 end;
 
 initialization

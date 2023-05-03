@@ -79,12 +79,7 @@ type
     Label24: TLabel;
     Bevel5: TBevel;
     Label12: TLabel;
-    Bevel6: TBevel;
-    Label20: TLabel;
     cb4DOSDesc: TCheckBox;
-    cbEnableLFN: TCheckBox;
-    Label21: TLabel;
-    Label22: TLabel;
     Bevel7: TBevel;
     cbFileSysChange: TCheckBox;
     procedure FormCreate(Sender: TObject);
@@ -157,7 +152,6 @@ begin
   DescPanel.Font.Color := FontColors[UseDescriptions];
   cbSimul4DOS.Checked := Simul4DOS;
   cbDescCaptions.Checked := DescCaptions;
-  cbEnableLFN.Checked := EnableLFN;
   EnableControlList([OKBtn, Notebook], CanEditSettings); { 2.2 }
 end;
 
@@ -202,7 +196,6 @@ begin
   UseDescriptions := cb4DOSDesc.Checked;
   Simul4DOS := cbSimul4DOS.Checked;
   DescCaptions := cbDescCaptions.Checked;
-  EnableLFN := cbEnableLFN.Checked;
   SaveFileSysProp;
   AnnounceSettingsChanged(Changes);
 end;

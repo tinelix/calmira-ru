@@ -146,6 +146,7 @@ type
     N6: TMenuItem;
     TrayAdd: TMenuItem;
     TrayRemove: TMenuItem;
+    TimerToBoldFont: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
@@ -198,6 +199,7 @@ type
     procedure TrayAddClick(Sender: TObject);
     procedure TrayRemoveClick(Sender: TObject);
     procedure TrayPropertiesClick(Sender: TObject);
+    procedure TimerToBoldFontTimer(Sender: TObject);
   private
     { Private declarations }
     Excludes: TStringList;
@@ -2100,6 +2102,14 @@ begin
     SaveAlias(t.FFilename, t.FRef);
     Configure;
   end;
+end;
+
+procedure TTaskbar.TimerToBoldFontTimer(Sender: TObject);
+begin
+    if StartButton.Font.Style = [] then
+    begin
+         StartButton.Font.Style := [fsBold];
+    end;
 end;
 
 end.
